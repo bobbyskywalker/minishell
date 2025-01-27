@@ -8,15 +8,45 @@
 #include "../lib/libft/libft.h"
 #include "../lib/libft/gnl/get_next_line.h"
 
-typedef struct s_token
+// AST node type enumerations
+typedef enum
 {
-	char **cmd;
-    char *file_out;
-    char *file_in;
-} t_token;
+    COMMAND_NODE,
+    PIPE_NODE,
+    REDIRECT_NODE,
+    // bonus (maybe) :))
+    AND_NODE,
+    OR_NODE
+} t_node_type;
+
+typedef struct s_command
+{
+    char **args;
+} t_command;
+
+typedef struct s_ast_node
+{
+    t_node_type type;
+    struct s_ast_node *left_child;
+    struct s_ast_node *right_child;
+    t_command *command;
+} t_ast_node;
 
 
 char **split_line(char *line);
+void execute_command(char *command);
 
+
+// SECTION: lexer
+char	*ft_strtok(const char *str, char separator);
+
+// SECTION: built-in commands
+int ft_echo(void);
+int ft_cd(void);
+int ft_pwd(void);
+int ft_exit(void);
+int ft_export(void);
+int ft_unset(void);
+int ft_env(void);
 
 #endif
