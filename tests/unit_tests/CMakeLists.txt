@@ -12,7 +12,7 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(gtest)
 
-add_executable(${PROJECT_NAME} strtok_test.cpp ../../src/parser/lexer.c ../../lib/libft/ft_isspace.c ../../lib/libft/ft_strlen.c)
+add_executable(${PROJECT_NAME} strtok_test.cpp ../../src/parser/lexer.c ../../lib/libft/ft_strlcpy.c ../../lib/libft/ft_strlen.c)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE gtest gtest_main)
 

@@ -17,6 +17,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <stdbool.h>
 #include "../lib/libft/libft.h"
 #include "../lib/libft/gnl/get_next_line.h"
 
