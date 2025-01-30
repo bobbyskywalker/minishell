@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 13:02:15 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/01/09 13:13:28 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/01/30 15:12:17 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,6 @@ int					ft_printf(const char *format, ...);
 // SECTION: new
 void				ft_slc_sort(int *arr, int len);
 void				ft_arr2d_free(char **arr);
-
+char				**ft_2d_strdup(char **arr);
+int					ft_2d_strlen(char **arr);
 #endif
