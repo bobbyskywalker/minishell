@@ -50,8 +50,7 @@ char					**split_line(char *line);
 void					execute_command(char *command);
 
 // SECTION: lexer
-char					*ft_strtok(const char *str, char separator);
-void					ft_strtok_reset(void);
+char	**tokenize(char *source);
 
 // SECTION: built-in commands
 int						ft_echo(void);

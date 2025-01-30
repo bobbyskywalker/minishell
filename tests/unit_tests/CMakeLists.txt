@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.11)
 
-project(strtok_tests LANGUAGES CXX C)
+project(tokenizer_tests LANGUAGES CXX C)
 
 include(FetchContent)
 
@@ -12,7 +12,8 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(gtest)
 
-add_executable(${PROJECT_NAME} strtok_test.cpp ../../src/parser/lexer.c ../../lib/libft/ft_strlcpy.c ../../lib/libft/ft_strlen.c)
+add_executable(${PROJECT_NAME} tokenizer_tests.cpp ../../src/parser/lexer.c ../../src/parser/tokenizer_utils.c 
+../../lib/libft/ft_calloc.c ../../lib/libft/ft_strlen.c ../../lib/libft/ft_strdup.c ../../lib/libft/ft_bzero.c)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE gtest gtest_main)
 
