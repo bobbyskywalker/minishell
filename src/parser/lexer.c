@@ -46,6 +46,8 @@ char	**tokenize(char *source)
 	char	*token;
 	int		end_flag;
 
+	if (!source || !*source)
+		return (NULL);
 	i = 0;
 	tokens = malloc(sizeof(char *) * (ft_strlen(source) + 1));
 	if (!tokens)
@@ -61,11 +63,13 @@ char	**tokenize(char *source)
 			break ;
 		if (source || end_flag == 1)
 		{
-			printf("token: %s\n", token);
 			tokens[i++] = ft_strdup(token);
 			free(token);
 			if (end_flag == 1)
+			{
+				tokens[i] = NULL;
 				break ;
+			}
 		}
 	}
 	if (token)

@@ -28,8 +28,9 @@ void shell_loop()
     }
 }
 
-// TODO: strtok fix + tests
-// tokenizer + parser to AST
+// TODO: Tokenizer norm fixes + additional whitespace at the end NULL termination
+// parser and interpreter to AST
+// AST execution logic
 // TESTS TESTS TESTS
 int main(int ac, char **av, char **envp)
 {
