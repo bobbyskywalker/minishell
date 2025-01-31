@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:08:51 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/01/30 15:39:49 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/01/31 13:08:33 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,42 @@ char	*get_token(char *source, char *token, int *end_flag)
 		else if (state == DOUBLEQUOTES)
 			handle_double_quotes(&source, token, &i, &state);
 		else if (state == TOKEN)
-			handle_token_state(&source, token, &i, &state, end_flag);
+			state = handle_token_state(&source, token, &i, end_flag);
 		else if (state == END)
 			return (source);
 	}
 	return (source);
+}
+
+// returns token, why would you ask? beacuse it needs to be freed
+// and norminette is a hoe
+char	*tokenize_loop(char *source, char **tokens, int i, int end_flag)
+{
+	char	*token;
+
+	while (1)
+	{
+		token = ft_calloc((ft_strlen(source) + 1), sizeof(char));
+		if (!token)
+			return (NULL);
+		source = get_token(source, token, &end_flag);
+		if (!token || !*token || (!source && !end_flag))
+		{
+			tokens[i] = NULL;
+			break ;
+		}
+		if ((source || *source) || end_flag == 1)
+		{
+			tokens[i++] = ft_strdup(token);
+			free(token);
+			if (end_flag == 1)
+			{
+				tokens[i] = NULL;
+				break ;
+			}
+		}
+	}
+	return (token);
 }
 
 char	**tokenize(char *source)
@@ -49,42 +80,12 @@ char	**tokenize(char *source)
 	if (!source || !*source)
 		return (NULL);
 	i = 0;
-	tokens = malloc(sizeof(char *) * (ft_strlen(source) + 1));
+	tokens = ft_calloc((ft_strlen(source) + 1), sizeof(char *));
 	if (!tokens)
 		return (NULL);
 	end_flag = 0;
-	while (1)
-	{
-		token = ft_calloc((ft_strlen(source) + 1), sizeof(char));
-		if (!token)
-			return (NULL);
-		source = get_token(source, token, &end_flag);
-		if (source == NULL && end_flag == 0)
-			break ;
-		if (source || end_flag == 1)
-		{
-			tokens[i++] = ft_strdup(token);
-			free(token);
-			if (end_flag == 1)
-			{
-				tokens[i] = NULL;
-				break ;
-			}
-		}
-	}
+	token = tokenize_loop(source, tokens, i, end_flag);
 	if (token)
 		free(token);
-	tokens[i] = NULL;
 	return (tokens);
 }
-
-// int	main(void)
-// {
-// 	char *source = "echo 123\"   super\" '|' grep '1' | wc\"-l\"";
-
-// 	char **tokens = tokenize(source);
-// 	(void)tokens;
-// 	// for (int i = 0; i < 2; i++)
-// 	// 	printf("%s", tokens[i]);
-// 	return (347);
-// }
