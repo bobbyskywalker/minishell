@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 15:24:38 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/01/30 15:39:08 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/01/31 13:07:11 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,21 +72,22 @@ void	handle_double_quotes(char **source, char *token, size_t *i,
 	}
 }
 
-void	handle_token_state(char **source, char *token, size_t *i,
-		t_machine_state *state, int *end_flag)
+t_machine_state	handle_token_state(char **source, char *token, size_t *i,
+		int *end_flag)
 {
 	if (**source == ' ' || **source == '\0' || **source == '\''
 		|| **source == '"')
 	{
 		token[*i] = 0;
-		*state = END;
 		if (**source == '\0')
 			*end_flag = 1;
+		return (END);
 	}
 	else
 	{
 		token[*i] = **source;
 		(*i)++;
 		(*source)++;
+		return (TOKEN);
 	}
 }
