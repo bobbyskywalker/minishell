@@ -70,13 +70,13 @@ t_ast_node				*create_redirect_node(t_redirect_type type,
 							char *filename, t_ast_node *child);
 void					free_ast(t_ast_node *root);
 
-t_ast_node				*build_ast(char **tokens);
-void					print_ast(t_ast_node *node, int depth);
-
 // SECTION: parser
+t_redirect_type			assign_redirection_type(char *token);
 t_ast_node				*parse_cmd(char ***tokens);
 t_ast_node				*parse_pipeline_part(char ***tokens);
 t_ast_node				*parse_redirections_part(char ***tokens,
 							t_ast_node *node);
+t_ast_node				*build_ast(char **tokens);
+void					print_ast(t_ast_node *node, int depth);
 
 #endif
