@@ -3,21 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:09:13 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/01/28 19:41:52 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/01/31 10:52:20 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdbool.h>
+# include <signal.h>
 #include "../lib/libft/libft.h"
 #include "../lib/libft/gnl/get_next_line.h"
 
@@ -55,11 +57,11 @@ char	*ft_strtok(const char *str, char separator);
 void    ft_strtok_reset(void);
 
 // SECTION: built-in commands
-int ft_echo(void);
-int ft_cd(void);
+int	ft_echo(t_ast_node node);
+int	ft_cd(t_ast_node node);
 int ft_pwd(void);
 int ft_exit(void);
-int ft_export(void);
+int	ft_export(t_ast_node node);
 int ft_unset(void);
 int ft_env(void);
 
