@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:09:03 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/01/31 14:49:35 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/01/31 18:41:50 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ void	shell_loop(void)
 	}
 }
 
-// TODO: Tokenizer norm fixes
-// parser and interpreter to AST
+// TODO: parser and interpreter to AST (for some reason it treats pipe node as redir node)
 // AST execution logic
 // structure for minishell global data
 // signal handling
