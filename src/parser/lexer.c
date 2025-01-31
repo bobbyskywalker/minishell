@@ -3,9 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:08:51 by agarbacz          #+#    #+#             */
+/*   Updated: 2025/01/31 18:32:56 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +55,7 @@ char	*tokenize_loop(char *source, char **tokens, int i, int end_flag)
 		{
 			tokens[i] = NULL;
 			break ;
-		}
+		}	
 		if ((source || *source) || end_flag == 1)
 		{
 			tokens[i++] = ft_strdup(token);
@@ -87,4 +88,11 @@ char	**tokenize(char *source)
 	if (token)
 		free(token);
 	return (tokens);
+}
+
+char	*get_next_token(char ***tokens)
+{
+	if (!(**tokens))
+		return (NULL);
+	return (*(*tokens)++);
 }

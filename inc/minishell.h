@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:09:13 by agarbacz          #+#    #+#             */
 /*   Updated: 2025/01/31 16:22:26 by jzackiew         ###   ########.fr       */
@@ -47,6 +47,7 @@ typedef struct s_ast_node
 	struct s_ast_node	*right_child;
 	t_command			*command;
 }						t_ast_node;
+
 
 typedef struct	s_shell_data
 {
