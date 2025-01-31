@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:09:03 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/01/28 18:09:04 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/01/30 10:53:12 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,9 @@ void shell_loop()
     }
 }
 
-// TODO: strtok fix + tests
-// tokenizer + parser to AST
+// TODO: Tokenizer norm fixes + additional whitespace at the end NULL termination
+// parser and interpreter to AST
+// AST execution logic
 // TESTS TESTS TESTS
 int main(int ac, char **av, char **envp)
 {
