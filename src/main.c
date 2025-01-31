@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:09:03 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/01/31 12:51:06 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/01/31 14:49:35 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,17 @@
 void	shell_loop(void)
 {
 	char	*line;
+	char	**tokens;
 
-	//	char **args = NULL;
 	line = NULL;
 	while (1)
 	{
 		write(1, "$> ", 3);
 		line = get_next_line(0);
-		execute_command(line);
+		tokens = tokenize(line);
+		t_ast_node *node = build_ast(tokens);
+		print_ast(node, 0);
+		free_ast(node);
 		free(line);
 	}
 }
