@@ -6,7 +6,7 @@
 /*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:08:59 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/01/31 10:25:30 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/01/31 18:40:23 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	ft_cd(t_ast_node node)
 	int		args_count;
 	char	*path;
 
-	ft_printf("path before: %s\n", getcwd(NULL, 0)); //debug
+	ft_printf("path before: %s\n", getcwd(NULL, 0)); // debug
 	args_count = ft_2d_strlen(node.command->args);
 	if (args_count > 1)
 		ft_printf("cd: string not in pwd: %s", path);
@@ -51,7 +51,7 @@ int	ft_cd(t_ast_node node)
 	status = chdir(path);
 	if (status < 0)
 		ft_printf("cd: no such file or directory: %s\n", path);
-	ft_printf("path after: %s\n", getcwd(NULL, 0)); //debug
+	ft_printf("path after: %s\n", getcwd(NULL, 0)); // debug
 	return (0);
 }
 
@@ -71,30 +71,78 @@ int	ft_exit(void)
 	return (0);
 }
 
+char	*get_key(char *env)
+{
+	size_t	i;
+	char	*key;
+	
+	i = 0;
+	while(env[i])
+	{
+		
+		i++;
+	}
+}
+
+int	compare_keys(char *str_a, char *str_b)
+{
+	size_t	i;
+	size_t	j;
+	
+	i = 0;
+	j = 0;
+	while(str_a[i] || str_a[i] != '=')
+		i++;
+	while(str_b[j] || str_b[j] != '=')
+		j++;
+	if (i != j)
+		return (0);
+	if (ft_strncmp(str_a, str_b, i))
+		return (0);
+	return (1);
+}
+
+int	is_key_in_envs(char *str, char **envs)
+{
+	size_t	i;
+	char	*key;
+	
+	key = ft_split(str, '=')[0];
+	i = -1;
+	while(envs[++i])
+	{
+		if (compare_keys(key, envs[i]))
+			return (i);
+	}
+	free(key);
+	return (-1);
+}
+
 // supposed to be in alphabetical order???
 // in case of no args it works like ">env" - not like ">export"
-int	ft_export(t_ast_node node)
+void	ft_export(t_ast_node node, t_shell_data *shell_data)
 {
-	extern char	**environ;
-	char		**argv;
-	int			args_count;
+	size_t	vars_count;
+	size_t	i;
 
-	args_count = ft_2d_strlen(node.command->args);
-	if (args_count < 1)
-		ft_2d_strprintf(environ);
-	else
+	if (ft_2d_strlen(shell_data->env_vars) < 1)
 	{
-		argv = (char **)ft_calloc(sizeof(char *), 4);
-		if (!argv)
-			exit(-1);
-		argv[0] = "/bin/sh";
-		argv[1] = "-c";
-		argv[2] = ft_strjoin("export ",node.command->args[0]);
-		execve("/bin/sh", argv, environ);
-		perror("execve");
-		ft_arr2d_free(argv);
+		ft_2d_strprintf(shell_data->env_vars);
+		return ;
 	}
-	return (0);
+	i = -1;
+	while (node.command->args[++i])
+	{
+		if (!ft_strchr(node.command->args[i], '='))
+			node.command->args[i] = ft_strjoin(node.command->args[i], "=''");
+		if (is_key_in_envs(node.command->args[i], shell_data->env_vars))
+			
+
+		vars_count = ft_2d_strlen(shell_data->env_vars);
+		ft_2d_realloc(shell_data->env_vars, vars_count * sizeof(char *), (vars_count + 1) * sizeof(char *));
+		shell_data->env_vars[vars_count] = node.command->args[i];
+		shell_data->env_vars[vars_count + 1] = NULL;
+	}
 }
 
 int	ft_unset(void)
@@ -117,22 +165,25 @@ int	ft_env(void)
 	return (0);
 }
 
-int	main(void)
+int	main(int argc, char **argv, char **envp)
 {
 	t_ast_node node;
+	t_shell_data shell_data;
 	// char *tmp[] = {"dupa ", "i ", "chuj", NULL};
-	char *tmp[] = {"CIPA=noico", NULL};
+	char *tmp[] = {"CIPA=noico", "CzegoSieKurwa=Patrzysz", "Cebularzu=JEBANY", "Gunwo", NULL};
 	node.command = malloc(sizeof(t_command));
 	if (!node.command)
 		return (1);
 	node.command->args = ft_2d_strdup(tmp);
+	shell_data.env_vars = envp;
 	// ft_echo(node);
 	// ft_pwd();
-	//ft_cd(node);
-	//ft_env();
-	ft_export(node);
-	ft_printf("%s\n", getenv("CIPA"));
-	free(node.command->args);
-	free(node.command);
+	// ft_cd(node);
+	// ft_env();
+	ft_export(node, &shell_data);
+	ft_2d_strprintf(shell_data.env_vars);
+	//ft_printf("%s\n", getenv("CIPA"));
+	//free(node.command->args);
+	//free(node.command);
 	return (1);
 }

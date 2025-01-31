@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_realloc.c                                       :+:      :+:    :+:   */
+/*   ft_2d_realloc.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/28 11:56:40 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/01/31 14:40:02 by jzackiew         ###   ########.fr       */
+/*   Created: 2025/01/31 15:50:06 by jzackiew          #+#    #+#             */
+/*   Updated: 2025/01/31 16:10:49 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
+void	*ft_2d_realloc(void *ptr, size_t old_size, size_t new_size)
 {
 	void	*new;
 	size_t	copy_size;
@@ -20,10 +20,7 @@ void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 	if (!ptr)
 		return (malloc(new_size));
 	if (new_size <= 0)
-	{
-		free(ptr);
 		return (NULL);
-	}
 	new = malloc(new_size);
 	if (!new)
 		return (NULL);
@@ -32,6 +29,5 @@ void	*ft_realloc(void *ptr, size_t old_size, size_t new_size)
 	else
 		copy_size = new_size;
 	memcpy(new, ptr, copy_size);
-	free(ptr);
 	return (new);
 }
