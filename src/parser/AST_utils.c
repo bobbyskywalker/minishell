@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:08:54 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/01/30 15:37:39 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/01/31 14:53:23 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,38 @@ t_ast_node	*create_operator_node(t_node_type type, t_ast_node *left,
 	return (node);
 }
 
+t_ast_node	*create_redirect_node(t_redirect_type type, char *filename,
+		t_ast_node *child)
+{
+	t_ast_node	*node;
+	t_redirect	*redirect;
+
+	node = malloc(sizeof(t_ast_node));
+	if (!node)
+		return (NULL);
+	redirect = malloc(sizeof(t_redirect));
+	if (!redirect)
+	{
+		free(node);
+		return (NULL);
+	}
+	redirect->type = type;
+	redirect->filename = ft_strdup(filename);
+	node->type = REDIRECT_NODE;
+	node->left_child = child;
+	node->right_child = NULL;
+	node->command = NULL;
+	node->redirect = redirect;
+	return (node);
+}
+
 // frees the syntax tree recursively
 void	free_ast(t_ast_node *root)
 {
 	if (!root)
 		return ;
-	free_AST(root->left_child);
-	free_AST(root->right_child);
+	free_ast(root->left_child);
+	free_ast(root->right_child);
 	if (root->type == COMMAND_NODE && root->command)
 		free(root->command);
 	free(root);
