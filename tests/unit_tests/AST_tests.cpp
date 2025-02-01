@@ -8,38 +8,185 @@ extern "C"
     #include "../../inc/minishell.h"
 }
 
-TEST(AST, test1)
+TEST(AST, SimpleCommandNoPipes)
 {
-    // Test input: "ls -l | grep 'Jan' > output.txt"
-    char *input[] = {"ls", "-l", "|", "grep", "Jan", ">", "output.txt", NULL};
+    char *input = "echo -n";
+    char **tokens = tokenize(input);
+    t_ast_node *ast = build_ast(tokens);
+    EXPECT_EQ(ast->type, COMMAND_NODE);
+    ft_arr2d_free(tokens);
+    free_ast(ast);
 
-    // Build the AST
-    t_ast_node *ast = build_ast(input);
+    input = "ls -l";
+    tokens = tokenize(input);
+    ast = build_ast(tokens);
+    EXPECT_EQ(ast->type, COMMAND_NODE);
+    ft_arr2d_free(tokens);
+    free_ast(ast);
 
-    // Check the root node is a PIPE_NODE
+    input = "wc -l -r -t -a -b -q -d -w";
+    tokens = tokenize(input);
+    ast = build_ast(tokens);
+    EXPECT_EQ(ast->type, COMMAND_NODE);
+    ft_arr2d_free(tokens);
+    free_ast(ast);
+}
+
+
+TEST(AST, SinglePipes)
+{
+    char *input = "ls | grep coding";
+    char **tokens = tokenize(input);
+    t_ast_node *ast = build_ast(tokens);
     EXPECT_EQ(ast->type, PIPE_NODE);
-
-    // Left child of the pipe should be a COMMAND_NODE ("ls -l")
     EXPECT_EQ(ast->left_child->type, COMMAND_NODE);
-    EXPECT_STREQ(ast->left_child->command->args[0], "ls");
-    EXPECT_STREQ(ast->left_child->command->args[1], "-l");
-    EXPECT_STREQ(ast->left_child->command->args[2], NULL);
-
-    // Right child of the pipe should be a COMMAND_NODE ("grep Jan")
     EXPECT_EQ(ast->right_child->type, COMMAND_NODE);
-    EXPECT_STREQ(ast->right_child->command->args[0], "grep");
-    EXPECT_STREQ(ast->right_child->command->args[1], "Jan");
-    EXPECT_STREQ(ast->right_child->command->args[2], NULL);
+    ft_arr2d_free(tokens);
+    free_ast(ast);
 
-    // Right child has a redirection node ">"
-    EXPECT_EQ(ast->right_child->left_child->type, REDIRECT_NODE);
 
-    // The redirection type should be OUTPUT_REDIRECT (since it's ">" )
-    EXPECT_EQ(ast->right_child->left_child->redirect->type, OUTPUT_REDIRECT);
+    input = "ls -lra | wc -lueir";
+    tokens = tokenize(input);
+    ast = build_ast(tokens);
+    EXPECT_EQ(ast->type, PIPE_NODE);
+    EXPECT_EQ(ast->left_child->type, COMMAND_NODE);
+    EXPECT_EQ(ast->right_child->type, COMMAND_NODE);
 
-    // The filename should be "output.txt"
-    EXPECT_EQ(ft_strncmp(ast->right_child->left_child->redirect->filename, "output.txt", ft_strlen("output.txt")), 0);
 
-    // Clean up the AST
+    input = "echo -n dupa | grep -s d";
+    tokens = tokenize(input);
+    ast = build_ast(tokens);
+    EXPECT_EQ(ast->type, PIPE_NODE);
+    EXPECT_EQ(ast->left_child->type, COMMAND_NODE);
+    EXPECT_EQ(ast->right_child->type, COMMAND_NODE);
+}
+
+TEST(AST, DoublePipes)
+{
+    char *input = "ls | grep coding | wc -l";
+    char **tokens = tokenize(input);
+    t_ast_node *ast = build_ast(tokens);
+
+    EXPECT_EQ(ast->type, PIPE_NODE);
+    EXPECT_EQ(ast->left_child->type, PIPE_NODE);
+    EXPECT_EQ(ast->right_child->type, COMMAND_NODE);
+    EXPECT_EQ(ast->left_child->left_child->type, COMMAND_NODE);
+    EXPECT_EQ(ast->left_child->right_child->type, COMMAND_NODE);
+    ft_arr2d_free(tokens);
+    free_ast(ast);
+}
+
+TEST(AST, MultiplePipes)
+{
+    char *input = "ls | grep coding | wc -l";
+    char **tokens = tokenize(input);
+    t_ast_node *ast = build_ast(tokens);
+
+    EXPECT_EQ(ast->type, PIPE_NODE);
+    EXPECT_EQ(ast->left_child->type, PIPE_NODE);
+    EXPECT_EQ(ast->right_child->type, COMMAND_NODE);
+    EXPECT_EQ(ast->left_child->left_child->type, COMMAND_NODE);
+    EXPECT_EQ(ast->left_child->right_child->type, COMMAND_NODE);
+    ft_arr2d_free(tokens);
+    free_ast(ast);
+
+    input = "echo \"123\" super\"poggers\" | grep -w \"super\" | wc -l -p -r";
+    tokens = tokenize(input);
+    ast = build_ast(tokens);
+
+    EXPECT_EQ(ast->type, PIPE_NODE);
+    EXPECT_EQ(ast->left_child->type, PIPE_NODE);
+    EXPECT_EQ(ast->right_child->type, COMMAND_NODE);
+    EXPECT_EQ(ast->left_child->left_child->type, COMMAND_NODE);
+    EXPECT_EQ(ast->left_child->right_child->type, COMMAND_NODE);
+    ft_arr2d_free(tokens);
+    free_ast(ast);
+}
+
+// TODO: heredoc parsing
+TEST(AST, SimpleRedirection)
+{
+    char *input = "ls > file.txt";
+    char **tokens = tokenize(input);
+    t_ast_node *ast = build_ast(tokens);
+    EXPECT_EQ(ast->type, REDIRECT_NODE);
+    EXPECT_EQ(ast->redirect->type, OUTPUT_REDIRECT);
+    EXPECT_STREQ(ast->redirect->filename, "file.txt");
+    EXPECT_EQ(ast->left_child->type, COMMAND_NODE);
+    ft_arr2d_free(tokens);
+    free_ast(ast);
+
+    input = "ls >> file.txt";
+    tokens = tokenize(input);
+    ast = build_ast(tokens);
+    EXPECT_EQ(ast->type, REDIRECT_NODE);
+    EXPECT_EQ(ast->redirect->type, APPEND_REDIRECT);
+    EXPECT_STREQ(ast->redirect->filename, "file.txt");
+    EXPECT_EQ(ast->left_child->type, COMMAND_NODE);
+    ft_arr2d_free(tokens);
+    free_ast(ast);
+
+    input = "ls < file.txt";
+    tokens = tokenize(input);
+    ast = build_ast(tokens);
+    EXPECT_EQ(ast->type, REDIRECT_NODE);
+    EXPECT_EQ(ast->redirect->type, INPUT_REDIRECT);
+    EXPECT_STREQ(ast->redirect->filename, "file.txt");
+    EXPECT_EQ(ast->left_child->type, COMMAND_NODE);
+    ft_arr2d_free(tokens);
+    free_ast(ast);
+}
+
+TEST(AST, MultipleRedirections)
+{
+    char *input = "ls > file.txt >> file2.txt";
+    char **tokens = tokenize(input);
+    t_ast_node *ast = build_ast(tokens);
+    EXPECT_EQ(ast->type, REDIRECT_NODE);
+    EXPECT_EQ(ast->redirect->type, APPEND_REDIRECT);
+    EXPECT_STREQ(ast->redirect->filename, "file2.txt");
+    EXPECT_EQ(ast->left_child->type, REDIRECT_NODE);
+    EXPECT_EQ(ast->left_child->redirect->type, OUTPUT_REDIRECT);
+    EXPECT_STREQ(ast->left_child->redirect->filename, "file.txt");
+    EXPECT_EQ(ast->left_child->left_child->type, COMMAND_NODE);
+    ft_arr2d_free(tokens);
+    free_ast(ast);
+}
+
+TEST(AST, DoubleRedirections)
+{
+    char *input = "ls >> file.txt >> file2.txt";
+    char **tokens = tokenize(input);
+    t_ast_node *ast = build_ast(tokens);
+    EXPECT_EQ(ast->type, REDIRECT_NODE);
+    EXPECT_EQ(ast->redirect->type, APPEND_REDIRECT);
+    EXPECT_STREQ(ast->redirect->filename, "file2.txt");
+    EXPECT_EQ(ast->left_child->type, REDIRECT_NODE);
+    EXPECT_EQ(ast->left_child->redirect->type, APPEND_REDIRECT);
+    EXPECT_STREQ(ast->left_child->redirect->filename, "file.txt");
+    EXPECT_EQ(ast->left_child->left_child->type, COMMAND_NODE);
+    ft_arr2d_free(tokens);
+    free_ast(ast);
+}
+
+TEST(AST, MultipleRedirectionsAndPipes)
+{
+    char *input = "ls | grep coding | wc -l > file.txt >> file2.txt";
+    char **tokens = tokenize(input);
+    t_ast_node *ast = build_ast(tokens);
+    EXPECT_EQ(ast->type, REDIRECT_NODE);
+    EXPECT_EQ(ast->redirect->type, APPEND_REDIRECT);
+    EXPECT_STREQ(ast->redirect->filename, "file2.txt");
+    EXPECT_EQ(ast->left_child->type, REDIRECT_NODE);
+    EXPECT_EQ(ast->left_child->redirect->type, OUTPUT_REDIRECT);
+    EXPECT_STREQ(ast->left_child->redirect->filename, "file.txt");
+
+    EXPECT_EQ(ast->left_child->left_child->type, PIPE_NODE);
+    EXPECT_EQ(ast->left_child->left_child->right_child->type, COMMAND_NODE);
+
+    EXPECT_EQ(ast->left_child->left_child->left_child->type, PIPE_NODE);
+    EXPECT_EQ(ast->left_child->left_child->left_child->right_child->type, COMMAND_NODE);
+    EXPECT_EQ(ast->left_child->left_child->left_child->left_child->type, COMMAND_NODE);
+    ft_arr2d_free(tokens);
     free_ast(ast);
 }

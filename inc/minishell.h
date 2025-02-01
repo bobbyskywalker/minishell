@@ -24,31 +24,6 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-// AST node type enumerations
-typedef enum e_node_type
-{
-	COMMAND_NODE,
-	PIPE_NODE,
-	REDIRECT_NODE,
-	// bonus (maybe) :))
-	AND_NODE,
-	OR_NODE
-}						t_node_type;
-
-typedef struct s_command
-{
-	char				**args;
-}						t_command;
-
-typedef struct s_ast_node
-{
-	t_node_type			type;
-	struct s_ast_node	*left_child;
-	struct s_ast_node	*right_child;
-	t_command			*command;
-}						t_ast_node;
-
-
 typedef struct	s_shell_data
 {
 	char	**env_vars;
