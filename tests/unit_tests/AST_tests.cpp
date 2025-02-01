@@ -190,3 +190,26 @@ TEST(AST, MultipleRedirectionsAndPipes)
     ft_arr2d_free(tokens);
     free_ast(ast);
 }
+
+TEST(AST, MultipleRedirectionsAndPipes2)
+{
+    char *input = "cat input.txt | grep \"error\" | sort > sorted_errors.txt >> error_log.txt";
+    char **tokens = tokenize(input);
+    t_ast_node *ast = build_ast(tokens);
+
+    EXPECT_EQ(ast->type, REDIRECT_NODE);
+    EXPECT_EQ(ast->redirect->type, APPEND_REDIRECT);
+    EXPECT_STREQ(ast->redirect->filename, "error_log.txt");
+
+    EXPECT_EQ(ast->left_child->type, REDIRECT_NODE);
+    EXPECT_EQ(ast->left_child->redirect->type, OUTPUT_REDIRECT);
+    EXPECT_STREQ(ast->left_child->redirect->filename, "sorted_errors.txt"); // redirect 2
+    
+    EXPECT_EQ(ast->left_child->left_child->type, PIPE_NODE); // grep error | sort
+    EXPECT_EQ(ast->left_child->left_child->right_child->type, COMMAND_NODE); // sort
+    EXPECT_EQ(ast->left_child->left_child->left_child->type, PIPE_NODE); // cat | grep
+    EXPECT_EQ(ast->left_child->left_child->left_child->right_child->type, COMMAND_NODE); // grep
+    EXPECT_EQ(ast->left_child->left_child->left_child->left_child->type, COMMAND_NODE); // cat
+    ft_arr2d_free(tokens);
+    free_ast(ast);
+}
