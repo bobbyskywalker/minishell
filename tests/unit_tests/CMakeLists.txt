@@ -39,7 +39,8 @@ add_executable(AST_tests AST_tests.cpp
     ../../lib/libft/ft_strlen.c 
     ../../lib/libft/ft_strdup.c 
     ../../lib/libft/ft_bzero.c
-    ../../lib/libft/ft_strncmp.c)
+    ../../lib/libft/ft_strncmp.c
+    ../../lib/libft/ft_arr2d_free.c)
 
 target_link_libraries(AST_tests PRIVATE gtest gtest_main)
 target_compile_features(AST_tests PRIVATE cxx_std_17)

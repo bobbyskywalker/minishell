@@ -19,7 +19,7 @@ OBJECTS = $(SOURCES:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJECTS)
-	ar rcs -o $(NAME) $(OBJECTS)
+	ar rcs $(NAME) $(OBJECTS)
 
 clean:
 	rm -f $(OBJECTS)
