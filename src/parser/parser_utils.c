@@ -44,7 +44,7 @@ t_redirect_type	assign_redirection_type(char *token)
 
 	if (!ft_strncmp(token, "<", 1))
 		type = INPUT_REDIRECT;
-	else if (!ft_strncmp(token, ">", 1))
+	else if (!ft_strncmp(token, ">", 1) && ft_strncmp(token, ">>", 2))
 		type = OUTPUT_REDIRECT;
 	else if (!ft_strncmp(token, ">>", 2))
 		type = APPEND_REDIRECT;
