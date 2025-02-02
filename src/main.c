@@ -30,8 +30,7 @@ void	shell_loop(void)
 	}
 }
 
-// TODO: parser and interpreter to AST (for some reason it treats pipe node as redir node)
-// AST execution logic
+// TODO: AST execution logic
 // structure for minishell global data
 // signal handling
 // TESTS TESTS TESTS
