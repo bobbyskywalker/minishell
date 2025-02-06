@@ -1,33 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_2d_realloc.c                                    :+:      :+:    :+:   */
+/*   ft_2dstr_realloc.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 15:50:06 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/01/31 16:10:49 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/06 15:14:42 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_2d_realloc(void *ptr, size_t old_size, size_t new_size)
+char	**ft_2dstr_realloc(char **arr, size_t old_rows, size_t new_rows)
 {
-	void	*new;
-	size_t	copy_size;
+	char	**new_arr;
+	size_t	i;
 
-	if (!ptr)
-		return (malloc(new_size));
-	if (new_size <= 0)
+	if (!arr || !*arr)
 		return (NULL);
-	new = malloc(new_size);
-	if (!new)
-		return (NULL);
-	if (old_size < new_size)
-		copy_size = old_size;
-	else
-		copy_size = new_size;
-	memcpy(new, ptr, copy_size);
-	return (new);
+	new_arr = (char **)ft_calloc(new_rows, sizeof(char *));
+	if (!new_arr)
+		return(NULL);
+	i = 0;
+	while (i < old_rows && i < new_rows)
+	{
+		new_arr[i] = arr[i];
+		i++;
+	}
+	if (new_rows < old_rows)
+		while(arr[i])
+			free(arr[i++]);
+	free(arr);
+	return (new_arr);
 }
