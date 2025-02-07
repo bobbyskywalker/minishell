@@ -27,7 +27,8 @@ typedef enum e_redirect_type
 {
 	INPUT_REDIRECT,
 	OUTPUT_REDIRECT,
-	APPEND_REDIRECT
+	APPEND_REDIRECT,
+	HEREDOC
 }						t_redirect_type;
 
 typedef struct s_redirect
