@@ -6,13 +6,13 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:09:03 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/01/31 18:41:50 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/07 16:46:29 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	shell_loop(void)
+void	shell_loop(char **envp)
 {
 	char	*line;
 	char	**tokens;
@@ -20,11 +20,11 @@ void	shell_loop(void)
 	line = NULL;
 	while (1)
 	{
-		write(1, "$> ", 3);
-		line = get_next_line(0);
+		line = readline("$> ");
 		tokens = tokenize(line);
 		t_ast_node *node = build_ast(tokens);
-		print_ast(node, 0);
+		execute_ast(node, envp);
+		// print_ast(node, 0);
 		free_ast(node);
 		free(line);
 	}
@@ -43,6 +43,6 @@ int	main(int ac, char **av, char **envp)
 		printf("valid exec.: ./minishell");
 		return (0);
 	}
-	shell_loop();
+	shell_loop(envp);
 	return (EXIT_SUCCESS);
 }

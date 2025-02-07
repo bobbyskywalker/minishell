@@ -180,10 +180,8 @@ TEST(AST, MultipleRedirectionsAndPipes)
     EXPECT_EQ(ast->left_child->type, REDIRECT_NODE);
     EXPECT_EQ(ast->left_child->redirect->type, OUTPUT_REDIRECT);
     EXPECT_STREQ(ast->left_child->redirect->filename, "file.txt");
-
     EXPECT_EQ(ast->left_child->left_child->type, PIPE_NODE);
     EXPECT_EQ(ast->left_child->left_child->right_child->type, COMMAND_NODE);
-
     EXPECT_EQ(ast->left_child->left_child->left_child->type, PIPE_NODE);
     EXPECT_EQ(ast->left_child->left_child->left_child->right_child->type, COMMAND_NODE);
     EXPECT_EQ(ast->left_child->left_child->left_child->left_child->type, COMMAND_NODE);
