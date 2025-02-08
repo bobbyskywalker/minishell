@@ -6,11 +6,11 @@
 /*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 15:22:02 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/06 16:23:03 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/07 14:52:58 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "built_ins.h"
+#include "../../../inc/built_ins.h"
 
 int	main(int argc, char **argv, char **envp)
 {

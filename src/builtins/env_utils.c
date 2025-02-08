@@ -6,11 +6,11 @@
 /*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 15:05:43 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/06 16:18:46 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/08 19:39:50 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "built_ins.h"
+#include "../../inc/built_ins.h"
 
 char	*get_key(char *str)
 {
