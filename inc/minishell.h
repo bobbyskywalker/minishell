@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:09:13 by agarbacz          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/02/07 17:56:54 by agarbacz         ###   ########.fr       */
+=======
+/*   Updated: 2025/02/05 18:53:35 by jzackiew         ###   ########.fr       */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +45,7 @@ char		**split_line(char *line);
 char		**tokenize(char *source);
 
 // SECTION: built-in commands
+<<<<<<< HEAD
 int			ft_echo(t_ast_node node);
 int			ft_cd(t_ast_node node);
 int			ft_pwd(void);
@@ -48,6 +53,15 @@ int			ft_exit(void);
 void		ft_export(t_ast_node node, t_shell_data *shell_data);
 int			ft_unset(void);
 int			ft_env(void);
+=======
+int						ft_echo(t_ast_node node);
+int						ft_cd(t_ast_node node, t_shell_data shell_data);
+int						ft_pwd(void);
+int						ft_exit(void);
+int						ft_export(t_ast_node node, t_shell_data *shell_data);
+int						ft_unset(t_ast_node node, t_shell_data *shell_data);
+int						ft_env(t_shell_data shell_data);
+>>>>>>> main
 
 // SECTION: exec utils
 int			is_builtin(char *cmd);
