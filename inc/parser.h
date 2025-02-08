@@ -51,6 +51,12 @@ typedef struct s_ast_node
 	t_command			*command;
 }						t_ast_node;
 
+typedef struct s_shell_data
+{
+	char	**env_vars;
+	int		last_cmd_status;
+}			t_shell_data;
+
 // SECTION: lexer
 char					**tokenize(char *source);
 void					handle_start_state(char **source, char *token,
