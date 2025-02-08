@@ -2,6 +2,7 @@
 # define PARSER_H
 
 # include "minishell.h"
+# include <stdbool.h>
 
 typedef enum e_machine_state
 {
@@ -35,6 +36,9 @@ typedef struct s_redirect
 {
 	t_redirect_type		type;
 	char				*filename;
+	bool 				is_heredoc;
+	char				*limiter;
+	bool				limiter_assigned;
 }						t_redirect;
 
 typedef struct s_command

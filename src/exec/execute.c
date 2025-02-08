@@ -6,13 +6,14 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:09:01 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/07 19:11:23 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/08 14:45:16 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-// TODO: here_doc fixes
+// TODO: here_doc redirection
+// file to file redirection
 // Built-in execution
 // signal handling
 
@@ -52,42 +53,6 @@ int	execute_command(t_ast_node *node, char **envp)
 	return (-1);
 }
 
-int	handle_heredoc(char *limiter)
-{
-	char	*line;
-	int		fd_tmp;
-
-	fd_tmp = open("tmp_file", O_RDWR | O_CREAT | O_TRUNC, 0777);
-	if (fd_tmp == -1)
-	{
-		perror("open");
-		return (-1);
-	}
-	rl_clear_history();
-	while (1)
-	{
-		line = readline("> ");
-		if (!line)
-			break;
-		if (!ft_strncmp(line, limiter, strlen(limiter)))
-		{
-			free(line);
-			break;
-		}
-		write(fd_tmp, line, ft_strlen(line));
-		write(fd_tmp, "\n", 1);
-		free(line);
-	}
-	close(fd_tmp);
-	fd_tmp = open("tmp_file", O_RDONLY, 0644);
-	if (fd_tmp == -1)
-	{
-		perror("open");
-		return (-1);
-	}
-	return (fd_tmp);
-}
-
 int	execute_redirection(t_ast_node *node, char **envp)
 {
 	int	fd;
@@ -98,38 +63,41 @@ int	execute_redirection(t_ast_node *node, char **envp)
 	if (!node || node->type != REDIRECT_NODE)
 		return (-1);
 	if (node->redirect->type == OUTPUT_REDIRECT)
+	{
+		 printf("Output redirect to: %s\n", node->redirect->filename);
 		fd = open(node->redirect->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	}
 	else if (node->redirect->type == APPEND_REDIRECT)
-		fd = open(node->redirect->filename, O_WRONLY | O_CREAT | O_APPEND,
-				0644);
-	else if (node->redirect->type == INPUT_REDIRECT)
+		fd = open(node->redirect->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	else if (node->redirect->type == INPUT_REDIRECT && !node->redirect->is_heredoc)
 		fd = open(node->redirect->filename, O_RDONLY);
-	else if (node->redirect->type == HEREDOC)
-		fd = handle_heredoc(node->redirect->filename);
+	else if (node->redirect->type == INPUT_REDIRECT && node->redirect->is_heredoc)
+		fd = handle_heredoc(node->redirect->limiter);
+		
 	if (fd == -1)
 	{
 		perror("open");
 		return (-1);
 	}
-	if (node->redirect->type == INPUT_REDIRECT
-		|| node->redirect->type == HEREDOC)
+	if (node->redirect->type == INPUT_REDIRECT)
+	{
 		saved_fd = dup(STDIN_FILENO);
-	else
-		saved_fd = dup(STDOUT_FILENO);
-	if (node->redirect->type == INPUT_REDIRECT
-		|| node->redirect->type == HEREDOC)
 		dup2(fd, STDIN_FILENO);
-	else
-		dup2(fd, STDOUT_FILENO);
-	close(fd);
-	status = execute_ast(node->left_child, envp);
-	if (node->redirect->type == INPUT_REDIRECT
-		|| node->redirect->type == HEREDOC)
+		close(fd);
+		status = execute_ast(node->left_child, envp);
 		dup2(saved_fd, STDIN_FILENO);
+		close(saved_fd);
+	}
 	else
+	{
+		saved_fd = dup(STDOUT_FILENO);
+		dup2(fd, STDOUT_FILENO);
+		close(fd);
+		status = execute_ast(node->left_child, envp);
 		dup2(saved_fd, STDOUT_FILENO);
-	close(saved_fd);
-	if (node->redirect->type == HEREDOC)
+		close(saved_fd);
+	}
+	if (node->redirect->is_heredoc)
 		unlink("tmp_file");
 	return (status);
 }
@@ -176,10 +144,11 @@ int	execute_ast(t_ast_node *node, char **envp)
 {
 	if (!node)
 		return (-1);
-	if (node->type == COMMAND_NODE)
-		return (execute_command(node, envp));
+	preprocess_heredocs(node);
 	if (node->type == REDIRECT_NODE)
 		return (execute_redirection(node, envp));
+	if (node->type == COMMAND_NODE)
+		return (execute_command(node, envp));
 	if (node->type == PIPE_NODE)
 		return (execute_pipeline(node, envp));
 	return (-1);
