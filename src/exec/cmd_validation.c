@@ -1,17 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   command.c                                          :+:      :+:    :+:   */
+/*   cmd_validation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:29:58 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/07 17:03:08 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/08 11:01:53 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// function to extract the paths-to-executables
+// from PATH env variable
 char	**get_path_env_var(char **envp)
 {
 	char	**dirs;
@@ -30,7 +32,7 @@ char	**get_path_env_var(char **envp)
 	return (NULL);
 }
 
-// function to validate the input command presence
+// function to validate the input command presence & access
 char	*validate_command(char *cmd, char **dirs)
 {
 	int		i;
