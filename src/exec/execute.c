@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:09:01 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/07 19:11:23 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/08 19:45:40 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,18 @@
 // returns negative value on errors:
 // - tree non-existent
 // - command execution failure
-int	execute_command(t_ast_node *node, char **envp)
+int	execute_command(t_ast_node *node, t_shell_data *shell_data)
 {
 	char	**args;
 	int		status;
 	pid_t	pid;
 	char	**dirs;
 
-	args = node->command->args;
 	if (!node || node->type != COMMAND_NODE)
 		return (-1);
-	if (is_builtin(args[0]))
+	if (is_builtin(*node, shell_data))
 		return (1);
-	dirs = get_path_env_var(envp);
+	dirs = get_path_env_var(shell_data->env_vars);
 	node->command->args[0] = validate_command(node->command->args[0], dirs);
 	if (!node->command->args[0])
 		return (-1);
@@ -40,7 +39,7 @@ int	execute_command(t_ast_node *node, char **envp)
 	ft_arr2d_free(dirs);
 	if (!pid)
 	{
-		execve(node->command->args[0], args, envp);
+		execve(node->command->args[0], args, shell_data->env_vars);
 		perror("execve");
 		exit(1);
 	}
@@ -88,7 +87,7 @@ int	handle_heredoc(char *limiter)
 	return (fd_tmp);
 }
 
-int	execute_redirection(t_ast_node *node, char **envp)
+int	execute_redirection(t_ast_node *node, t_shell_data *shell_data)
 {
 	int	fd;
 	int	saved_fd;
@@ -122,7 +121,7 @@ int	execute_redirection(t_ast_node *node, char **envp)
 	else
 		dup2(fd, STDOUT_FILENO);
 	close(fd);
-	status = execute_ast(node->left_child, envp);
+	status = execute_ast(node->left_child, shell_data);
 	if (node->redirect->type == INPUT_REDIRECT
 		|| node->redirect->type == HEREDOC)
 		dup2(saved_fd, STDIN_FILENO);
@@ -134,7 +133,7 @@ int	execute_redirection(t_ast_node *node, char **envp)
 	return (status);
 }
 
-int	execute_pipeline(t_ast_node *node, char **envp)
+int	execute_pipeline(t_ast_node *node, t_shell_data *shell_data)
 {
 	pid_t	pid;
 	int		status;
@@ -154,7 +153,7 @@ int	execute_pipeline(t_ast_node *node, char **envp)
 		close(pipe_fd[0]);               // close read end
 		dup2(pipe_fd[1], STDOUT_FILENO); // redirect stdout to pipe
 		close(pipe_fd[1]);
-		exit(execute_ast(node->left_child, envp)); // exec left command
+		exit(execute_ast(node->left_child, shell_data)); // exec left command
 	}
 	pid2 = fork();
 	if (pid2 == 0) // right command dups (consumer part of pipe)
@@ -162,7 +161,7 @@ int	execute_pipeline(t_ast_node *node, char **envp)
 		close(pipe_fd[1]);              // close write end
 		dup2(pipe_fd[0], STDIN_FILENO); // redirect stdin to pipe
 		close(pipe_fd[0]);
-		exit(execute_ast(node->right_child, envp)); // exec right command
+		exit(execute_ast(node->right_child, shell_data)); // exec right command
 	}
 	// close the pipe
 	close(pipe_fd[0]);
@@ -172,15 +171,15 @@ int	execute_pipeline(t_ast_node *node, char **envp)
 	return (WEXITSTATUS(status));
 }
 
-int	execute_ast(t_ast_node *node, char **envp)
+int	execute_ast(t_ast_node *node, t_shell_data *shell_data)
 {
 	if (!node)
 		return (-1);
 	if (node->type == COMMAND_NODE)
-		return (execute_command(node, envp));
+		return (execute_command(node, shell_data));
 	if (node->type == REDIRECT_NODE)
-		return (execute_redirection(node, envp));
+		return (execute_redirection(node, shell_data));
 	if (node->type == PIPE_NODE)
-		return (execute_pipeline(node, envp));
+		return (execute_pipeline(node, shell_data));
 	return (-1);
 }
