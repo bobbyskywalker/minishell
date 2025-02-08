@@ -6,7 +6,7 @@
 /*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 13:02:15 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/01/31 15:58:39 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/06 15:31:03 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,5 @@ char				**ft_2d_strdup(char **arr);
 int					ft_2d_strlen(char **arr);
 void				ft_2d_strprintf(char **str);
 void				*ft_realloc(void *ptr, size_t old_size, size_t new_size);
-void				*ft_2d_realloc(void *ptr, size_t old_size, size_t new_size);
+char				**ft_2dstr_realloc(char **arr, size_t old_rows, size_t new_rows);
 #endif
