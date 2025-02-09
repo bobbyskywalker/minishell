@@ -53,53 +53,87 @@ int	execute_command(t_ast_node *node, char **envp)
 	return (-1);
 }
 
-int	execute_redirection(t_ast_node *node, char **envp)
+int execute_redirection(t_ast_node *node, char **envp)
 {
-	int	fd;
-	int	saved_fd;
-	int	status;
+    int fd = -1;
+    int saved_stdin = -1;
+    int saved_stdout = -1;
+    int status;
+    t_ast_node *cmd_node = NULL;
+    t_ast_node *current = node;
 
-	fd = -1;
-	if (!node || node->type != REDIRECT_NODE)
-		return (-1);
-	if (node->redirect->type == OUTPUT_REDIRECT)
-	{
-		 printf("Output redirect to: %s\n", node->redirect->filename);
-		fd = open(node->redirect->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	}
-	else if (node->redirect->type == APPEND_REDIRECT)
-		fd = open(node->redirect->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	else if (node->redirect->type == INPUT_REDIRECT && !node->redirect->is_heredoc)
-		fd = open(node->redirect->filename, O_RDONLY);
-	else if (node->redirect->type == INPUT_REDIRECT && node->redirect->is_heredoc)
-		fd = handle_heredoc(node->redirect->limiter);
-		
-	if (fd == -1)
-	{
-		perror("open");
-		return (-1);
-	}
-	if (node->redirect->type == INPUT_REDIRECT)
-	{
-		saved_fd = dup(STDIN_FILENO);
-		dup2(fd, STDIN_FILENO);
-		close(fd);
-		status = execute_ast(node->left_child, envp);
-		dup2(saved_fd, STDIN_FILENO);
-		close(saved_fd);
-	}
-	else
-	{
-		saved_fd = dup(STDOUT_FILENO);
-		dup2(fd, STDOUT_FILENO);
-		close(fd);
-		status = execute_ast(node->left_child, envp);
-		dup2(saved_fd, STDOUT_FILENO);
-		close(saved_fd);
-	}
-	if (node->redirect->is_heredoc)
-		unlink("tmp_file");
-	return (status);
+    if (!node || node->type != REDIRECT_NODE)
+        return (-1);
+
+    // find the actual command node and count redirections
+    while (current && current->type == REDIRECT_NODE)
+    {
+        // create/truncate files for output redirections immediately
+        if (current->redirect->type == OUTPUT_REDIRECT)
+            close(open(current->redirect->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644));
+        else if (current->redirect->type == APPEND_REDIRECT)
+            close(open(current->redirect->filename, O_WRONLY | O_CREAT | O_APPEND, 0644));
+        current = current->left_child;
+    }
+    cmd_node = current;  // this should be the command node
+
+    // save original file descriptors
+    saved_stdin = dup(STDIN_FILENO);
+    saved_stdout = dup(STDOUT_FILENO);
+
+    // now handle only the rightmost redirection
+    if (node->redirect->type == INPUT_REDIRECT)
+    {
+        if (node->redirect->is_heredoc)
+            fd = handle_heredoc(node->redirect->limiter);
+        else
+            fd = open(node->redirect->filename, O_RDONLY);
+        
+        if (fd == -1)
+        {
+            perror("open input");
+            return (-1);
+        }
+        dup2(fd, STDIN_FILENO);
+        close(fd);
+    }
+    else // OUTPUT_REDIRECT or APPEND_REDIRECT
+    {
+        int flags = O_WRONLY | O_CREAT;
+        flags |= (node->redirect->type == APPEND_REDIRECT) ? O_APPEND : O_TRUNC;
+        
+        fd = open(node->redirect->filename, flags, 0644);
+        if (fd == -1)
+        {
+            perror("open output");
+            if (saved_stdin != -1)
+                dup2(saved_stdin, STDIN_FILENO);
+            return (-1);
+        }
+        dup2(fd, STDOUT_FILENO);
+        close(fd);
+    }
+
+    // execute the actual command node directly, not the whole subtree
+    status = (cmd_node) ? execute_command(cmd_node, envp) : -1;
+
+    // restore original file descriptors
+    if (saved_stdin != -1)
+    {
+        dup2(saved_stdin, STDIN_FILENO);
+        close(saved_stdin);
+    }
+    if (saved_stdout != -1)
+    {
+        dup2(saved_stdout, STDOUT_FILENO);
+        close(saved_stdout);
+    }
+
+    // cleanup heredoc temporary file
+    if (node->redirect->is_heredoc)
+        unlink("tmp_file");
+
+    return (status);
 }
 
 int	execute_pipeline(t_ast_node *node, char **envp)
