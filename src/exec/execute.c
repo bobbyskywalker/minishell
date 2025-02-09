@@ -65,23 +65,16 @@ int execute_redirection(t_ast_node *node, char **envp)
     if (!node || node->type != REDIRECT_NODE)
         return (-1);
 
-    // find the actual command node and count redirections
+    // traverse to find the last command node in redirections
     while (current && current->type == REDIRECT_NODE)
-    {
-        // create/truncate files for output redirections immediately
-        if (current->redirect->type == OUTPUT_REDIRECT)
-            close(open(current->redirect->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644));
-        else if (current->redirect->type == APPEND_REDIRECT)
-            close(open(current->redirect->filename, O_WRONLY | O_CREAT | O_APPEND, 0644));
         current = current->left_child;
-    }
     cmd_node = current;  // this should be the command node
-
-    // save original file descriptors
+    if (!cmd_node)
+        return (-1);
+    // save original stdin and stdout
     saved_stdin = dup(STDIN_FILENO);
     saved_stdout = dup(STDOUT_FILENO);
-
-    // now handle only the rightmost redirection
+    // handle input redirection
     if (node->redirect->type == INPUT_REDIRECT)
     {
         if (node->redirect->is_heredoc)
@@ -97,7 +90,7 @@ int execute_redirection(t_ast_node *node, char **envp)
         dup2(fd, STDIN_FILENO);
         close(fd);
     }
-    else // OUTPUT_REDIRECT or APPEND_REDIRECT
+    else  // handle output redirection
     {
         int flags = O_WRONLY | O_CREAT;
         flags |= (node->redirect->type == APPEND_REDIRECT) ? O_APPEND : O_TRUNC;
@@ -113,11 +106,9 @@ int execute_redirection(t_ast_node *node, char **envp)
         dup2(fd, STDOUT_FILENO);
         close(fd);
     }
-
-    // execute the actual command node directly, not the whole subtree
-    status = (cmd_node) ? execute_command(cmd_node, envp) : -1;
-
-    // restore original file descriptors
+    // exec cmd after redirections
+    status = execute_ast(cmd_node, envp);
+    // restore original stdin / stdout
     if (saved_stdin != -1)
     {
         dup2(saved_stdin, STDIN_FILENO);
@@ -128,51 +119,62 @@ int execute_redirection(t_ast_node *node, char **envp)
         dup2(saved_stdout, STDOUT_FILENO);
         close(saved_stdout);
     }
-
-    // cleanup heredoc temporary file
-    if (node->redirect->is_heredoc)
-        unlink("tmp_file");
-
     return (status);
 }
 
-int	execute_pipeline(t_ast_node *node, char **envp)
-{
-	pid_t	pid;
-	int		status;
-	int		pipe_fd[2];
-	pid_t	pid2;
 
-	if (!node || node->type != PIPE_NODE)
-		return (-1);
-	if (pipe(pipe_fd) == -1)
-	{
-		perror("pipe");
-		return (-1);
-	}
-	pid = fork();
-	if (pid == 0) // left command dups (producer part of pipe)
-	{
-		close(pipe_fd[0]);               // close read end
-		dup2(pipe_fd[1], STDOUT_FILENO); // redirect stdout to pipe
-		close(pipe_fd[1]);
-		exit(execute_ast(node->left_child, envp)); // exec left command
-	}
-	pid2 = fork();
-	if (pid2 == 0) // right command dups (consumer part of pipe)
-	{
-		close(pipe_fd[1]);              // close write end
-		dup2(pipe_fd[0], STDIN_FILENO); // redirect stdin to pipe
-		close(pipe_fd[0]);
-		exit(execute_ast(node->right_child, envp)); // exec right command
-	}
-	// close the pipe
-	close(pipe_fd[0]);
-	close(pipe_fd[1]);
-	waitpid(pid, &status, 0);
-	waitpid(pid2, &status, 0);
-	return (WEXITSTATUS(status));
+int execute_pipeline(t_ast_node *node, char **envp)
+{
+    pid_t pid1, pid2;
+    int status;
+    int pipe_fd[2];
+
+    if (!node || node->type != PIPE_NODE)
+        return (-1);
+
+    if (pipe(pipe_fd) == -1)
+    {
+        perror("pipe");
+        return (-1);
+    }
+    // left side of pipe
+    pid1 = fork();
+    if (pid1 < 0)
+    {
+        perror("fork");
+        return (-1);
+    }
+    if (pid1 == 0)
+    {
+        close(pipe_fd[0]); // close read end
+        dup2(pipe_fd[1], STDOUT_FILENO); // redirect stdout to pipe
+        close(pipe_fd[1]);
+        exit(execute_ast(node->left_child, envp));
+    }
+    // second command (right side of pipe)
+    pid2 = fork();
+    if (pid2 < 0)
+    {
+        perror("fork");
+        kill(pid1, SIGTERM);
+        return (-1);
+    }
+    if (pid2 == 0)
+    {
+        close(pipe_fd[1]);              // close write end
+        dup2(pipe_fd[0], STDIN_FILENO); // redirect stdin from pipe
+        close(pipe_fd[0]);
+        // exec ast, dont handle redirs separately
+        exit(execute_ast(node->right_child, envp));
+    }
+    // parent process
+    close(pipe_fd[0]);
+    close(pipe_fd[1]);
+    waitpid(pid1, &status, 0);
+    waitpid(pid2, &status, 0);
+    return (WEXITSTATUS(status));
 }
+
 
 int	execute_ast(t_ast_node *node, char **envp)
 {
