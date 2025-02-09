@@ -29,6 +29,8 @@ int	ft_echo(char **args)
 	while (args[i])
 	{
 		ft_printf("%s", args[i]);
+        if (args[i + 1])
+            ft_printf(" ");
 		i++;
 	}
 	if (!is_flag)
