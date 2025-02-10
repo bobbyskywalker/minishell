@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/08 09:58:31 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/10 16:51:31 by agarbacz         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -17,6 +5,7 @@
 # include "../lib/libft/gnl/get_next_line.h"
 # include "../lib/libft/libft.h"
 # include "parser.h"
+
 # include <errno.h>
 # include <fcntl.h>
 # include <readline/history.h>
@@ -28,12 +17,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
-
-typedef struct s_shell_data
-{
-	char	**env_vars;
-	int		last_cmd_status;
-}			t_shell_data;
+# include "built_ins.h"
 
 char		**split_line(char *line);
 
@@ -64,6 +48,11 @@ int			kill_on_error(pid_t pid, int mode);
 void		exec_first_child(int pipe_fd[2], t_ast_node *node, char **envp);
 void		exec_second_child(int pipe_fd[2], t_ast_node *node, char **envp);
 void		close_and_await(int pipe_fd[2], int pid1, int pid2, int status);
+// SECTION: lexer
+char		**tokenize(char *source);
+
+// SECTION: exec utils
+int			is_builtin(t_ast_node node, t_shell_data *shell_data);
 
 // SECTION: execution
 char		**get_path_env_var(char **envp);
