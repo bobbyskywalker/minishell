@@ -14,7 +14,6 @@
 #include "../../inc/minishell.h"
 
 
-// echo nie stawia spacji
 // nie można wywołać ./minishell
 int	is_builtin(t_ast_node node, t_shell_data *shell_data)
 {
