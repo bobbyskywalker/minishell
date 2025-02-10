@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:08:54 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/01/31 14:53:23 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/08 12:58:34 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ t_ast_node	*create_redirect_node(t_redirect_type type, char *filename,
 	node->right_child = NULL;
 	node->command = NULL;
 	node->redirect = redirect;
+	node->redirect->is_heredoc = false;
+	node->redirect->limiter_assigned = false;
 	return (node);
 }
 

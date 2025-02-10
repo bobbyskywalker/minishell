@@ -31,6 +31,39 @@ TEST(AST, SimpleCommandNoPipes)
     ft_arr2d_free(tokens);
     free_ast(ast);
 }
+TEST(AST, InputRedirections)
+{
+    char *input = "ls < file.txt";
+    char **tokens = tokenize(input);
+    t_ast_node *ast = build_ast(tokens);
+    EXPECT_EQ(ast->type, REDIRECT_NODE);
+    EXPECT_EQ(ast->redirect->type, INPUT_REDIRECT);
+    EXPECT_STREQ(ast->redirect->filename, "file.txt");
+    EXPECT_EQ(ast->left_child->type, COMMAND_NODE);
+    ft_arr2d_free(tokens);
+    free_ast(ast);
+
+    input = "ls << EOF";
+    tokens = tokenize(input);
+    ast = build_ast(tokens);
+    EXPECT_EQ(ast->type, REDIRECT_NODE);
+    EXPECT_EQ(ast->redirect->type, HEREDOC);
+    EXPECT_STREQ(ast->redirect->filename, "EOF");
+    EXPECT_EQ(ast->left_child->type, COMMAND_NODE);
+    ft_arr2d_free(tokens);
+    free_ast(ast);
+
+
+    input = "ls < file.txt | grep error";
+    tokens = tokenize(input);
+    ast = build_ast(tokens);
+    EXPECT_EQ(ast->type, PIPE_NODE);
+    EXPECT_EQ(ast->left_child->type, REDIRECT_NODE);
+    EXPECT_EQ(ast->left_child->redirect->type, INPUT_REDIRECT);
+    EXPECT_STREQ(ast->left_child->redirect->filename, "file.txt");
+    ft_arr2d_free(tokens);
+    free_ast(ast);
+}
 
 
 TEST(AST, SinglePipes)

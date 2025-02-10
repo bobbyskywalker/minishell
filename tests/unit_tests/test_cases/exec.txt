@@ -1,0 +1,8 @@
+ls > file1
+ls > file1 | grep mini > file2 | wc -l > file3
+
+
+
+
+error: cat < file1 > file2 {should print file1 to file 2}
+error: ls > file1 | cat file1 {should print file1}
