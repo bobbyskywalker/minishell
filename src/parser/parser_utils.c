@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 16:09:36 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/08 11:13:09 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/10 13:32:52 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ t_ast_node	*parse_pipeline_part(char ***tokens)
 	char		*token;
 
 	left = parse_cmd(tokens);
+	left = parse_redirections_part(tokens, left);
 	while (1)
 	{
 		token = get_next_token(tokens);
@@ -26,6 +27,7 @@ t_ast_node	*parse_pipeline_part(char ***tokens)
 			break ;
 		if (!ft_strncmp(token, "|", 1))
 		{
+			right = parse_redirections_part(tokens, right);
 			right = parse_cmd(tokens);
 			left = create_operator_node(PIPE_NODE, left, right);
 		}
