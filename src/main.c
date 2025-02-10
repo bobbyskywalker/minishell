@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:09:03 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/07 16:46:29 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/10 14:10:38 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	shell_loop(char **envp)
 	char	*line;
 	char	**tokens;
 
+	// (void) envp;
 	line = NULL;
 	while (1)
 	{
@@ -30,10 +31,10 @@ void	shell_loop(char **envp)
 	}
 }
 
-// TODO: AST execution logic
-// structure for minishell global data
-// signal handling
-// TESTS TESTS TESTS
+// TODO: Signal handling
+// $?
+// env variables
+// search and lanuch executable
 int	main(int ac, char **av, char **envp)
 {
 	(void)envp;
