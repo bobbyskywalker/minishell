@@ -5,6 +5,7 @@
 # include "../lib/libft/gnl/get_next_line.h"
 # include "../lib/libft/libft.h"
 # include "parser.h"
+# include "built_ins.h"
 
 # include <errno.h>
 # include <fcntl.h>
@@ -17,24 +18,6 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
-# include "built_ins.h"
-
-char		**split_line(char *line);
-
-// SECTION: built-in commands
-
-int			ft_echo(t_ast_node node);
-int			ft_cd(t_ast_node node, t_shell_data shell_data);
-int			ft_pwd(void);
-int			ft_exit(void);
-int			ft_export(t_ast_node node, t_shell_data *shell_data);
-int			ft_unset(t_ast_node node, t_shell_data *shell_data);
-int			ft_env(t_shell_data shell_data);
-
-// SECTION: exec utils
-int			is_builtin(char *cmd);
-void		preprocess_heredocs(t_ast_node *node);
-int			handle_heredoc(char *limiter);
 
 // SECTION: redirections
 void		restore_fds(int saved_stdin, int saved_stdout);
@@ -42,6 +25,8 @@ t_ast_node	*traverse_to_command(t_ast_node *node);
 int			handle_out_app_redirections(t_ast_node *node, int fd,
 				int saved_stdin);
 int			handle_input_redirection(t_ast_node *node, int fd);
+void		preprocess_heredocs(t_ast_node *node);
+int			handle_heredoc(char *limiter);
 
 // SECTION: pipes
 int			kill_on_error(pid_t pid, int mode);
@@ -51,13 +36,15 @@ void		close_and_await(int pipe_fd[2], int pid1, int pid2, int status);
 // SECTION: lexer
 char		**tokenize(char *source);
 
-// SECTION: exec utils
-int			is_builtin(t_ast_node node, t_shell_data *shell_data);
-
 // SECTION: execution
 char		**get_path_env_var(char **envp);
 char		*validate_command(char *cmd, char **dirs);
 int			prepare_cmd_for_exec(t_ast_node *node, char **envp);
 int			calc_file_flags(t_ast_node *node);
 int			execute_ast(t_ast_node *node, char **envp);
+
+// SECTION: exec utils
+// int			is_builtin(t_ast_node node, t_shell_data *shell_data);
+int			is_builtin(char *cmd);
+
 #endif
