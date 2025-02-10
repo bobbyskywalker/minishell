@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:09:03 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/10 14:10:38 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/10 14:22:29 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	shell_loop(char **envp)
 	while (1)
 	{
 		line = readline("$> ");
+		add_history(line);
 		tokens = tokenize(line);
 		t_ast_node *node = build_ast(tokens);
 		execute_ast(node, envp);
@@ -35,6 +36,8 @@ void	shell_loop(char **envp)
 // $?
 // env variables
 // search and lanuch executable
+// here doc not printing and here doc redirecitons maybeeeee
+// error handling?
 int	main(int ac, char **av, char **envp)
 {
 	(void)envp;
