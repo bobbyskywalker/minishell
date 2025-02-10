@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:29:58 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/08 11:01:53 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/10 14:14:31 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ char	**get_path_env_var(char **envp)
 // function to validate the input command presence & access
 char	*validate_command(char *cmd, char **dirs)
 {
-	int		i;
-	char	*cmd_path;
-	char	*path;
+	int			i;
+	char		*cmd_path;
+	char		*path;
 
 	i = 0;
 	while (dirs[i])
@@ -46,10 +46,10 @@ char	*validate_command(char *cmd, char **dirs)
 		path = ft_strjoin(cmd_path, cmd);
 		free(cmd_path);
 		if (!access(path, F_OK))
-        {
-            free(cmd);
+		{
+			free(cmd);
 			return (path);
-        }
+		}
 		free(path);
 		i++;
 	}

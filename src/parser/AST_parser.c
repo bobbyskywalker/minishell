@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 13:27:53 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/10 13:24:54 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/10 14:12:41 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_ast_node	*parse_cmd(char ***tokens)
 			break ;
 		if (!ft_strncmp(token, "|", 1) || !ft_strncmp(token, "<", 1)
 			|| !ft_strncmp(token, ">", 1) || !ft_strncmp(token, ">>", 2)
-				|| !ft_strncmp(token, "<<", 2))
+			|| !ft_strncmp(token, "<<", 2))
 		{
 			(*tokens)--;
 			break ;

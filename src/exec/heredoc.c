@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 10:57:14 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/08 14:37:35 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/10 14:28:00 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,18 +35,8 @@ void	preprocess_heredocs(t_ast_node *node)
 	preprocess_heredocs(node->right_child);
 }
 
-int	handle_heredoc(char *limiter)
+void	read_heredoc_input(char *line, char *limiter, int fd_tmp)
 {
-	char	*line;
-	int		fd_tmp;
-
-	fd_tmp = open("tmp_file", O_RDWR | O_CREAT | O_TRUNC, 0777);
-	if (fd_tmp == -1)
-	{
-		perror("open");
-		return (-1);
-	}
-	rl_clear_history();
 	while (1)
 	{
 		line = readline("> ");
@@ -61,6 +51,21 @@ int	handle_heredoc(char *limiter)
 		write(fd_tmp, "\n", 1);
 		free(line);
 	}
+}
+
+int	handle_heredoc(char *limiter)
+{
+	char	*line;
+	int		fd_tmp;
+
+	line = NULL;
+	fd_tmp = open("tmp_file", O_RDWR | O_CREAT | O_TRUNC, 0777);
+	if (fd_tmp == -1)
+	{
+		perror("open");
+		return (-1);
+	}
+	read_heredoc_input(line, limiter, fd_tmp);
 	close(fd_tmp);
 	fd_tmp = open("tmp_file", O_RDONLY, 0644);
 	if (fd_tmp == -1)

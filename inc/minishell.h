@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 09:58:31 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/08 11:02:51 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/10 15:36:49 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,6 @@ int			handle_heredoc(char *limiter);
 // SECTION: execution
 char		**get_path_env_var(char **envp);
 char		*validate_command(char *cmd, char **dirs);
+int			prepare_cmd_for_exec(t_ast_node *node, char **envp);
 int			execute_ast(t_ast_node *node, char **envp);
 #endif
