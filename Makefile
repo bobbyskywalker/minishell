@@ -5,7 +5,7 @@ NAME = minishell
 
 SRCS = src/main.c \
        src/parser/AST_parser.c src/parser/AST_utils.c src/parser/parser_utils.c src/parser/lexer.c src/parser/tokenizer_utils.c \
-	   src/exec/cmd_validation.c src/exec/execute.c src/exec/exec_utils.c src/exec/heredoc.c
+	   src/exec/cmd_validation.c src/exec/execute.c src/exec/exec_utils.c src/exec/heredoc.c src/exec/redirect.c src/exec/pipe.c
 
 OBJS = $(SRCS:.c=.o)
 
