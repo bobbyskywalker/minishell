@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:09:03 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/10 14:22:29 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/10 17:46:44 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,3 +50,20 @@ int	main(int ac, char **av, char **envp)
 	shell_loop(envp);
 	return (EXIT_SUCCESS);
 }
+
+// KUBA's MAIN
+// int	main(int ac, char **av, char **envp)
+// {
+// 	(void)av;
+// 	t_shell_data shell_data;
+	
+// 	shell_data.env_vars = ft_2d_strdup(envp);
+// 	if (ac != 1)
+// 	{
+// 		printf("valid exec.: ./minishell");
+// 		return (0);
+// 	}
+// 	shell_loop(shell_data);
+// 	ft_arr2d_free(shell_data.env_vars);
+// 	return (EXIT_SUCCESS);
+// }
