@@ -21,7 +21,6 @@
 // - command execution failure
 int	execute_command(t_ast_node *node, t_shell_data *shell_data)
 {
-	char	**args;
 	int		status;
 	pid_t	pid;
 	char	**dirs;
@@ -39,7 +38,7 @@ int	execute_command(t_ast_node *node, t_shell_data *shell_data)
 	ft_arr2d_free(dirs);
 	if (!pid)
 	{
-		execve(node->command->args[0], args, shell_data->env_vars);
+		execve(node->command->args[0], node->command->args, shell_data->env_vars);
 		perror("execve");
 		exit(1);
 	}
