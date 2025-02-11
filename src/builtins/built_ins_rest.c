@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_ins_rest.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:08:59 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/08 19:44:50 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/11 13:44:41 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ int	ft_echo(char **args)
 	while (args[i])
 	{
 		ft_printf("%s", args[i]);
-        if (args[i + 1])
-            ft_printf(" ");
+		if (args[i + 1])
+			ft_printf(" ");
 		i++;
 	}
 	if (!is_flag)
@@ -47,7 +47,7 @@ int	ft_cd(char **args, t_shell_data shell_data)
 
 	args_count = ft_2d_strlen(args);
 	if (args_count > 1)
-		return (ft_printf("cd: string not in pwd: %s", args[0])- 1);
+		return (ft_printf("cd: string not in pwd: %s", args[0]) - 1);
 	if (args_count < 1)
 	{
 		id = is_key_in_envs("HOME", shell_data.env_vars);
@@ -63,7 +63,7 @@ int	ft_cd(char **args, t_shell_data shell_data)
 	return (1);
 }
 
-int	ft_pwd()
+int	ft_pwd(void)
 {
 	char	*pwd_str;
 
@@ -75,7 +75,7 @@ int	ft_pwd()
 	return (1);
 }
 
-int	ft_exit()
+int	ft_exit(void)
 {
 	exit(1);
 	return (0);
