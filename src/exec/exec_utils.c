@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:50:45 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/10 17:55:35 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/11 12:35:55 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ int	is_builtin(char *cmd)
 	return (0);
 }
 
-
 // return non-zero on error
 int	prepare_cmd_for_exec(t_ast_node *node, char **envp)
 {
@@ -81,4 +80,42 @@ int	calc_file_flags(t_ast_node *node)
 	else
 		flags |= O_TRUNC;
 	return (flags);
+}
+int	swap_env_val(t_ast_node *node, t_shell_data shell_data)
+{
+	int	i;
+	int	key_id;
+
+	i = 0;
+	while (node->command->args[i])
+	{
+		if (node->command->args[i][0] == '$')
+		{
+			key_id = is_key_in_envs(&node->command->args[i][1],
+					shell_data.env_vars);
+			free(node->command->args[i]);
+			if (key_id == -1)
+				node->command->args[i] = ft_strdup("");
+			else
+				node->command->args[i] = get_value(shell_data.env_vars[key_id]);
+		}
+		i++;
+	}
+	return (1);
+}
+void	process_env_vars(t_ast_node *node, t_shell_data shell_data)
+{
+	int status;
+
+	status = 0;
+	if (!node)
+		return ;
+	if (node->type == COMMAND_NODE)
+	{
+		status = swap_env_val(node, shell_data);
+		if (status < 0)
+			return ;
+	}
+	process_env_vars(node->left_child, shell_data);
+	process_env_vars(node->right_child, shell_data);
 }

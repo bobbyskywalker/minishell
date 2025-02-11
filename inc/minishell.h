@@ -22,6 +22,10 @@
 // SECTION: lexer
 char		**tokenize(char *source);
 
+// SECTION: env variables
+int			swap_env_val(t_ast_node *node, t_shell_data shell_data);
+void		process_env_vars(t_ast_node *node, t_shell_data shell_data);
+
 // SECTION: redirections
 void		restore_fds(int saved_stdin, int saved_stdout);
 t_ast_node	*traverse_to_command(t_ast_node *node);
