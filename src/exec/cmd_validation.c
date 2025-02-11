@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:29:58 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/11 15:47:11 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/11 16:25:25 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,11 @@ char	*validate_command(char *cmd, char **dirs, t_shell_data *shell_data)
 		{
 			free(cmd);
 			return (path);
+		}
+		if (!access(cmd, F_OK))
+		{
+			free(path);
+			return (cmd);
 		}
 		free(path);
 		i++;

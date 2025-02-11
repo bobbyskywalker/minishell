@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:09:03 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/11 15:48:59 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/11 16:39:55 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	shell_loop(t_shell_data *shell_data)
 	line = NULL;
 	while (1)
 	{
-		line = readline("$> ");
+		line = readline("miniHell $> ");
 		add_history(line);
 		tokens = tokenize(line);
 		node = build_ast(tokens);
@@ -35,10 +35,12 @@ void	shell_loop(t_shell_data *shell_data)
 }
 
 // TODO: Signal handling
-// search and lanuch executable
-// here doc not printing and here doc redirecitons maybeeeee
+// here doc not printing and here doc redirecitons
+// input redirections fixes
+// output redirections fixes ?
 // error handling?
-
+// memory leaks
+// segfault on empty line
 int	main(int ac, char **av, char **envp)
 {
 	(void)av;
