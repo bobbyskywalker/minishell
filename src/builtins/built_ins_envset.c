@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_ins_envset.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 15:11:17 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/08 19:47:51 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/11 13:44:44 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ static void	append_env(char *env, t_shell_data *shell_data)
 	if (id == -1)
 	{
 		vars_count = ft_2d_strlen(shell_data->env_vars);
-		shell_data->env_vars = ft_2dstr_realloc(shell_data->env_vars,
-				vars_count + 1, vars_count + 2);
+		shell_data->env_vars = ft_2dstr_realloc(shell_data->env_vars, vars_count
+				+ 1, vars_count + 2);
 		shell_data->env_vars[vars_count] = env;
 	}
 }
@@ -54,8 +54,8 @@ static void	remove_env(char *env, t_shell_data *shell_data)
 			id++;
 		}
 		shell_data->env_vars[vars_count] = NULL;
-		shell_data->env_vars = ft_2dstr_realloc(shell_data->env_vars,
-				vars_count + 1, vars_count);
+		shell_data->env_vars = ft_2dstr_realloc(shell_data->env_vars, vars_count
+				+ 1, vars_count);
 	}
 }
 
@@ -91,8 +91,7 @@ int	ft_unset(char **args, t_shell_data *shell_data)
 	{
 		if (ft_strchr(args[i], '='))
 		{
-			ft_printf("unset: %s: invalid parameter name\n",
-				args[i]);
+			ft_printf("unset: %s: invalid parameter name\n", args[i]);
 			i++;
 		}
 		else
