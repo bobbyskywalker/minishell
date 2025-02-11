@@ -6,16 +6,11 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:09:01 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/11 12:35:47 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/11 13:46:42 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-// TODO: here_doc redirection
-// file to file redirection
-// Built-in execution
-// signal handling
 
 // returns negative value on errors:
 // - tree non-existent
@@ -25,12 +20,13 @@ int	execute_command(t_ast_node *node, t_shell_data *shell_data)
 	int		status;
 	pid_t	pid;
 
-	if (prepare_cmd_for_exec(node, shell_data->env_vars))
+	if (prepare_cmd_for_exec(node, shell_data))
 		return (-1);
 	pid = fork();
 	if (!pid)
 	{
-		execve(node->command->args[0], node->command->args, shell_data->env_vars);
+		execve(node->command->args[0], node->command->args,
+			shell_data->env_vars);
 		perror("execve");
 		exit(1);
 	}
