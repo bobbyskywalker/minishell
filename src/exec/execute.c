@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:09:01 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/11 13:46:42 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/11 15:45:22 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,14 @@ int	execute_command(t_ast_node *node, t_shell_data *shell_data)
 		execve(node->command->args[0], node->command->args,
 			shell_data->env_vars);
 		perror("execve");
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 	else if (pid > 0)
 	{
 		waitpid(pid, &status, 0);
+		shell_data->last_cmd_status = WEXITSTATUS(status);
 		return (WEXITSTATUS(status));
+		
 	}
 	return (-1);
 }

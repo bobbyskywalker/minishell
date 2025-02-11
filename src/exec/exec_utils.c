@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:50:45 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/11 13:05:03 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/11 15:48:01 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,26 @@
 #include "../../inc/minishell.h"
 
 // nie można wywołać ./minishell
-int	is_builtin(t_ast_node node, t_shell_data *shell_data)
+int	is_builtin(char *cmd)
+{
+	if (!ft_strncmp(cmd, "echo", 4))
+		return (1);
+	if (!ft_strncmp(cmd, "cd", 2))
+		return (1);
+	if (!ft_strncmp(cmd, "pwd", 3))
+		return (1);
+	if (!ft_strncmp(cmd, "exit", 4))
+		return (1);
+	if (!ft_strncmp(cmd, "export", 6))
+		return (1);
+	if (!ft_strncmp(cmd, "unset", 5))
+		return (1);
+	if (!ft_strncmp(cmd, "env", 3))
+		return (1);
+	return (0);
+}
+
+int	exec_builtin(t_ast_node node, t_shell_data *shell_data)
 {
 	if (!ft_strncmp(node.command->args[0], "echo", 4))
 		return (ft_echo(&node.command->args[1]));
@@ -30,7 +49,7 @@ int	is_builtin(t_ast_node node, t_shell_data *shell_data)
 		return (ft_unset(&node.command->args[1], shell_data));
 	if (!ft_strncmp(node.command->args[0], "env", 3))
 		return (ft_env(*shell_data));
-	return (0);
+	return (1);
 }
 
 // return non-zero on error
@@ -40,11 +59,13 @@ int	prepare_cmd_for_exec(t_ast_node *node, t_shell_data *shell_data)
 
 	if (!node || node->type != COMMAND_NODE)
 		return (-1);
-	if (is_builtin(*node, shell_data))
+	if (is_builtin(node->command->args[0]))
+	{
+		shell_data->last_cmd_status = exec_builtin(*node, shell_data);
 		return (1);
-	// return (execute_builtin(args));
+	}
 	dirs = get_path_env_var(shell_data->env_vars);
-	node->command->args[0] = validate_command(node->command->args[0], dirs);
+	node->command->args[0] = validate_command(node->command->args[0], dirs, shell_data);
 	if (!node->command->args[0])
 		return (-1);
 	ft_arr2d_free(dirs);
@@ -72,6 +93,12 @@ int	swap_env_val(t_ast_node *node, t_shell_data shell_data)
 	{
 		if (node->command->args[i][0] == '$')
 		{
+			if (node->command->args[i][1] == '?')
+			{
+				free(node->command->args[i]);
+				node->command->args[i] = ft_itoa(shell_data.last_cmd_status);
+				continue ;
+			}
 			key_id = is_key_in_envs(&node->command->args[i][1],
 					shell_data.env_vars);
 			free(node->command->args[i]);
@@ -84,6 +111,7 @@ int	swap_env_val(t_ast_node *node, t_shell_data shell_data)
 	}
 	return (1);
 }
+
 void	process_env_vars(t_ast_node *node, t_shell_data shell_data)
 {
 	int status;

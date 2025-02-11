@@ -44,12 +44,13 @@ void		close_and_await(int pipe_fd[2], int pid1, int pid2, int status);
 
 // SECTION: execution
 char		**get_path_env_var(char **envp);
-char		*validate_command(char *cmd, char **dirs);
+char		*validate_command(char *cmd, char **dirs, t_shell_data *shell_data);
 int			prepare_cmd_for_exec(t_ast_node *node, t_shell_data *shell_data);
 int			calc_file_flags(t_ast_node *node);
 int			execute_ast(t_ast_node *node, t_shell_data *shell_data);
 
 // SECTION: exec utils
-int			is_builtin(t_ast_node node, t_shell_data *shell_data);
+int			is_builtin(char *cmd);
+int			exec_builtin(t_ast_node node, t_shell_data *shell_data);
 
 #endif
