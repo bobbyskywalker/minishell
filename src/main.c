@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:09:03 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/11 13:44:04 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/11 15:48:59 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	shell_loop(t_shell_data *shell_data)
 }
 
 // TODO: Signal handling
-// $?
 // search and lanuch executable
 // here doc not printing and here doc redirecitons maybeeeee
 // error handling?
@@ -49,6 +48,7 @@ int	main(int ac, char **av, char **envp)
 	if (!shell_data)
 		return (1);
 	shell_data->env_vars = ft_2d_strdup(envp);
+	shell_data->last_cmd_status = 0;
 	if (ac != 1)
 	{
 		printf("valid exec.: ./minishell");

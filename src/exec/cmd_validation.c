@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:29:58 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/10 14:14:31 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/11 15:47:11 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	**get_path_env_var(char **envp)
 }
 
 // function to validate the input command presence & access
-char	*validate_command(char *cmd, char **dirs)
+char	*validate_command(char *cmd, char **dirs, t_shell_data *shell_data)
 {
 	int			i;
 	char		*cmd_path;
@@ -54,5 +54,6 @@ char	*validate_command(char *cmd, char **dirs)
 		i++;
 	}
 	printf("minishell: command not found: %s\n", cmd);
+	shell_data->last_cmd_status = 127;
 	return (NULL);
 }
