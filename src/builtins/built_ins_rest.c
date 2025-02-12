@@ -6,7 +6,7 @@
 /*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:08:59 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/12 11:03:07 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/12 12:52:00 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,15 +75,13 @@ int	ft_pwd(void)
 	return (0);
 }
 
-int	ft_exit(t_ast_node *head, t_shell_data *shell_data)
+void	ft_exit(t_shell_data *shell_data)
 {
-	(void)head;
-	//free_ast(head);
 	ft_arr2d_free(shell_data->env_vars);
+	free_ast(shell_data->root);
 	free(shell_data);
 	rl_clear_history();
-	exit(0);	
-	return (0);
+	exit(EXIT_SUCCESS);
 }
 
 int	ft_env(t_shell_data shell_data)
