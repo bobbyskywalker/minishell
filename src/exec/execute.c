@@ -6,7 +6,7 @@
 /*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:09:01 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/12 17:22:05 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/12 17:24:16 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,30 +46,27 @@ int	execute_command(t_ast_node *node, t_shell_data *shell_data)
 int	execute_redirection(t_ast_node *node, t_shell_data *shell_data, int status,
 		t_ast_node *cmd_node)
 {
-	int	fd;
-	int	saved_stdin;
-	int	saved_stdout;
+	int			saved_fds[2];
+	t_ast_node	*last_in;
+	t_ast_node	*last_out;
 
-	fd = -1;
 	if (!node || node->type != REDIRECT_NODE)
 		return (-1);
 	cmd_node = traverse_to_command(node);
 	if (cmd_node == NULL)
 		return (-1);
-	saved_stdin = dup(STDIN_FILENO);
-	saved_stdout = dup(STDOUT_FILENO);
-	if (node->redirect->type == INPUT_REDIRECT)
-	{
-		if (handle_input_redirection(node, fd) == -1)
-			return (-1);
-	}
-	else
-	{
-		if (handle_out_app_redirections(node, fd, saved_stdin) == -1)
-			return (-1);
-	}
+	saved_fds[0] = dup(STDIN_FILENO);
+	saved_fds[1] = dup(STDOUT_FILENO);
+	if (handle_dup_errors(saved_fds[0], saved_fds[1]) == -1)
+		return (-1);
+	last_in = NULL;
+	last_out = NULL;
+	get_last_in_and_out(node, &last_in, &last_out);
+	if (apply_redirections(node, last_in, last_out, saved_fds) == -1)
+		return (-1);
 	status = execute_ast(cmd_node, shell_data);
-	restore_fds(saved_stdin, saved_stdout);
+	restore_fds(saved_fds[0], saved_fds[1]);
+	cleanup_heredoc_files(node);
 	return (status);
 }
 
