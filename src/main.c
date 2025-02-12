@@ -6,7 +6,7 @@
 /*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:09:03 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/12 18:02:50 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/12 18:19:29 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,7 @@ void	shell_loop(t_shell_data *shell_data)
 		shell_data->root = node;
 		free(tokens);
 		execute_ast(node, shell_data);
-		if (node != shell_data->root)
-			free_ast(node);
+		free_ast(shell_data->root);
 	}
 }
 
@@ -77,7 +76,6 @@ int	main(int ac, char **av, char **envp)
 	shell_data = create_shell_data(envp);
 	shell_loop(shell_data);
 	rl_clear_history();
-	free_ast(shell_data->root);
 	ft_arr2d_free(shell_data->env_vars);
 	free(shell_data);
 	return (EXIT_SUCCESS);
