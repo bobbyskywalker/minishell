@@ -6,7 +6,7 @@
 /*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:09:03 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/12 13:38:27 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/12 17:13:08 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,7 @@ void	shell_loop(t_shell_data *shell_data)
 		if (node != shell_data->root)
 			free_ast(node);
 	}
-	rl_clear_history();
 }
-
-// TODO:
-// here doc not printing and here doc redirecitons
-// heredoc tmp_file not unlinking itself
-// input redirections fixes
-// output redirections fixes ?
-// error handling?
-// cleanup on exits
-// memory leaks
-// ctrl-z lol
 
 t_shell_data	*create_shell_data(char **envp)
 {
@@ -67,6 +56,16 @@ t_shell_data	*create_shell_data(char **envp)
 	return (shell_data);
 }
 
+// TODO:
+// here doc not printing and here doc redirecitons
+// heredoc tmp_file not unlinking itself
+// input redirections fixes
+// output redirections fixes ?
+// error handling?
+// cleanup on exits
+// memory leaks
+// ctrl-z acts funny
+// ctrl-c after cat acts funny
 int	main(int ac, char **av, char **envp)
 {
 	t_shell_data	*shell_data;
@@ -80,6 +79,7 @@ int	main(int ac, char **av, char **envp)
 	handle_signals();
 	shell_data = create_shell_data(envp);
 	shell_loop(shell_data);
+	rl_clear_history();
 	free_ast(shell_data->root);
 	ft_arr2d_free(shell_data->env_vars);
 	free(shell_data);
