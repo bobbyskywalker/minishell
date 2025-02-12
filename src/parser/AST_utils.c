@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   AST_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:08:54 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/08 12:58:34 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/12 11:13:56 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,5 +85,10 @@ void	free_ast(t_ast_node *root)
 	free_ast(root->right_child);
 	if (root->type == COMMAND_NODE && root->command)
 		free(root->command);
+	// if (root->type == COMMAND_NODE && root->command)
+	// {
+	// 	ft_arr2d_free(root->command->args);
+	// 	free(root->command);
+	// }	
 	free(root);
 }
