@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/12 11:18:34 by jzackiew          #+#    #+#             */
+/*   Updated: 2025/02/12 12:12:20 by jzackiew         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PARSER_H
 # define PARSER_H
 
@@ -36,7 +48,7 @@ typedef struct s_redirect
 {
 	t_redirect_type		type;
 	char				*filename;
-	bool 				is_heredoc;
+	bool				is_heredoc;
 	char				*limiter;
 	bool				limiter_assigned;
 }						t_redirect;
@@ -57,9 +69,10 @@ typedef struct s_ast_node
 
 typedef struct s_shell_data
 {
-	char	**env_vars;
-	int		last_cmd_status;
-}			t_shell_data;
+	char				**env_vars;
+	int					last_cmd_status;
+	t_ast_node			*root;
+}						t_shell_data;
 
 // SECTION: lexer
 char					**tokenize(char *source);

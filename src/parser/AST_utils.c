@@ -6,7 +6,7 @@
 /*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:08:54 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/12 11:13:56 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/12 12:55:33 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,10 @@ t_ast_node	*create_redirect_node(t_redirect_type type, char *filename,
 		return (NULL);
 	}
 	redirect->type = type;
-	redirect->filename = ft_strdup(filename);
+	redirect->filename = NULL;
+	if (filename)
+		redirect->filename = ft_strdup(filename);
+	redirect->limiter = NULL;
 	node->type = REDIRECT_NODE;
 	node->left_child = child;
 	node->right_child = NULL;
@@ -83,12 +86,18 @@ void	free_ast(t_ast_node *root)
 		return ;
 	free_ast(root->left_child);
 	free_ast(root->right_child);
-	if (root->type == COMMAND_NODE && root->command)
-		free(root->command);
 	// if (root->type == COMMAND_NODE && root->command)
 	// {
 	// 	ft_arr2d_free(root->command->args);
 	// 	free(root->command);
 	// }	
+	// if (root->type == REDIRECT_NODE)
+	// {
+	// 	if (root->redirect->filename)
+	// 		free(root->redirect->filename);
+	// 	if (root->redirect->limiter)
+	// 		free(root->redirect->limiter);
+	// 	free(root->redirect);
+	// }
 	free(root);
 }
