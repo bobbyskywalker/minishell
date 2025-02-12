@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/12 11:17:53 by jzackiew          #+#    #+#             */
+/*   Updated: 2025/02/12 13:37:05 by jzackiew         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -11,12 +23,12 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
-#include <termios.h>
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <termios.h>
 # include <unistd.h>
 
 // SECTION: lexer
@@ -55,6 +67,6 @@ int			is_builtin(char *cmd);
 int			exec_builtin(t_ast_node node, t_shell_data *shell_data);
 
 // SECTION: signals handling
-void		handle_signals();
+void		handle_signals(void);
 
 #endif
