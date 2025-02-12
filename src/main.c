@@ -6,7 +6,7 @@
 /*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:09:03 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/12 17:23:59 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/12 17:51:20 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,13 @@ t_shell_data	*create_shell_data(char **envp)
 }
 
 // TODO:
-// here doc not printing and here doc redirecitons
-// heredoc tmp_file not unlinking itself
-// input redirections fixes
-// output redirections fixes ?
+// multiple output redirections fixes
 // error handling?
-// cleanup on exits
-// memory leaks
+// memory leaks (tokens not freeable???)
+// quotes on echo
 // ctrl-z acts funny
 // ctrl-c after cat acts funny
+// ft_cd not freeing
 int	main(int ac, char **av, char **envp)
 {
 	t_shell_data	*shell_data;
