@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:50:45 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/12 13:37:53 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/12 15:27:43 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/built_ins.h"
 #include "../../inc/minishell.h"
 
-// nie można wywołać ./minishell
 int	is_builtin(char *cmd)
 {
 	if (!ft_strncmp(cmd, "echo", 4))
