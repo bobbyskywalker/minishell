@@ -6,7 +6,7 @@
 /*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:50:45 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/12 10:48:15 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/12 13:37:53 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	exec_builtin(t_ast_node node, t_shell_data *shell_data)
 	if (!ft_strncmp(node.command->args[0], "pwd", 3))
 		return (ft_pwd());
 	if (!ft_strncmp(node.command->args[0], "exit", 4))
-		return (ft_exit(&node, shell_data));
+		return (ft_exit(shell_data), -1);
 	if (!ft_strncmp(node.command->args[0], "export", 6))
 		return (ft_export(&node.command->args[1], shell_data));
 	if (!ft_strncmp(node.command->args[0], "unset", 5))
