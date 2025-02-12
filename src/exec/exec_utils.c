@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:50:45 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/11 15:48:01 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/12 10:22:14 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ int	prepare_cmd_for_exec(t_ast_node *node, t_shell_data *shell_data)
 		return (1);
 	}
 	dirs = get_path_env_var(shell_data->env_vars);
-	node->command->args[0] = validate_command(node->command->args[0], dirs, shell_data);
+	node->command->args[0] = validate_command(node->command->args[0], dirs,
+			shell_data);
 	if (!node->command->args[0])
 		return (-1);
 	ft_arr2d_free(dirs);
@@ -83,6 +84,7 @@ int	calc_file_flags(t_ast_node *node)
 		flags |= O_TRUNC;
 	return (flags);
 }
+
 int	swap_env_val(t_ast_node *node, t_shell_data shell_data)
 {
 	int	i;
@@ -114,7 +116,7 @@ int	swap_env_val(t_ast_node *node, t_shell_data shell_data)
 
 void	process_env_vars(t_ast_node *node, t_shell_data shell_data)
 {
-	int status;
+	int	status;
 
 	status = 0;
 	if (!node)
