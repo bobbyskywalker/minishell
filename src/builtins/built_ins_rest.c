@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_ins_rest.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:08:59 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/11 15:23:00 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/12 11:03:07 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,13 @@ int	ft_pwd(void)
 	return (0);
 }
 
-int	ft_exit(void)
+int	ft_exit(t_ast_node *head, t_shell_data *shell_data)
 {
+	(void)head;
+	//free_ast(head);
+	ft_arr2d_free(shell_data->env_vars);
+	free(shell_data);
+	rl_clear_history();
 	exit(0);	
 	return (0);
 }
