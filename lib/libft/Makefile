@@ -14,6 +14,7 @@ SOURCES = \
 	gnl/get_next_line.c gnl/get_next_line_utils.c ft_arr2d_free.c ft_slc_sort.c \
 	ft_realloc.c ft_2d_strdup.c ft_2d_strlen.c ft_2d_strprintf.c ft_2dstr_realloc.c
 
+
 OBJECTS = $(SOURCES:.c=.o)
 
 all: $(NAME)
