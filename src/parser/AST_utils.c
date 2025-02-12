@@ -88,7 +88,9 @@ void	free_ast(t_ast_node *root)
 	free_ast(root->right_child);
 	if (root->type == COMMAND_NODE && root->command)
 	{
-		ft_arr2d_free(root->command->args);
+		for (int i = 0; root->command->args[i]; i++)
+			free(root->command->args[i]);
+		free(root->command->args);
 		free(root->command);
 	}	
 	if (root->type == REDIRECT_NODE)

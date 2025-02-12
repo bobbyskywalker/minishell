@@ -60,6 +60,7 @@ char	*tokenize_loop(char *source, char **tokens, int i, int end_flag)
 		{
 			tokens[i++] = ft_strdup(token);
 			free(token);
+			token = NULL;
 			if (end_flag == 1)
 			{
 				tokens[i] = NULL;
