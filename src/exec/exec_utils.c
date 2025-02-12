@@ -6,7 +6,7 @@
 /*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:50:45 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/12 13:37:53 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/12 17:20:23 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,9 @@ int	prepare_cmd_for_exec(t_ast_node *node, t_shell_data *shell_data)
 	dirs = get_path_env_var(shell_data->env_vars);
 	node->command->args[0] = validate_command(node->command->args[0], dirs,
 			shell_data);
+	ft_arr2d_free(dirs);
 	if (!node->command->args[0])
 		return (-1);
-	ft_arr2d_free(dirs);
 	return (0);
 }
 
