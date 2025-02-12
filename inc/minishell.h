@@ -55,6 +55,6 @@ int			is_builtin(char *cmd);
 int			exec_builtin(t_ast_node node, t_shell_data *shell_data);
 
 // SECTION: signals handling
-void		set_signals();
+void		handle_signals();
 
 #endif
