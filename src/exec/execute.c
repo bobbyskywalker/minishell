@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:09:01 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/11 15:45:22 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/12 10:22:31 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ int	execute_command(t_ast_node *node, t_shell_data *shell_data)
 		waitpid(pid, &status, 0);
 		shell_data->last_cmd_status = WEXITSTATUS(status);
 		return (WEXITSTATUS(status));
-		
 	}
 	return (-1);
 }
