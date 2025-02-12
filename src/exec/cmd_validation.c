@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_validation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:29:58 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/11 16:25:25 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/12 10:31:52 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,15 @@ char	**get_path_env_var(char **envp)
 		i++;
 	}
 	return (NULL);
+}
+
+void	set_error_status(char *cmd, t_shell_data *shell_data)
+{
+	if (ft_strchr(cmd, '/'))
+		ft_printf("minishell: no such file or directory: %s\n", cmd);
+	else
+		ft_printf("minishell: command not found: %s\n", cmd);
+	shell_data->last_cmd_status = 127;
 }
 
 // function to validate the input command presence & access
@@ -58,7 +67,6 @@ char	*validate_command(char *cmd, char **dirs, t_shell_data *shell_data)
 		free(path);
 		i++;
 	}
-	printf("minishell: command not found: %s\n", cmd);
-	shell_data->last_cmd_status = 127;
+	set_error_status(cmd, shell_data);
 	return (NULL);
 }
