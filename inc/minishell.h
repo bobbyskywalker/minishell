@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 11:17:53 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/12 13:37:05 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/12 17:08:52 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,16 @@ void		process_env_vars(t_ast_node *node, t_shell_data shell_data);
 // SECTION: redirections
 void		restore_fds(int saved_stdin, int saved_stdout);
 t_ast_node	*traverse_to_command(t_ast_node *node);
-int			handle_out_app_redirections(t_ast_node *node, int fd,
-				int saved_stdin);
+int			handle_dup_errors(int saved_stdin, int saved_stdout);
+void		get_last_in_and_out(t_ast_node *node, t_ast_node **last_in,
+				t_ast_node **last_out);
+int			handle_output_redirect(t_ast_node *current, t_ast_node *last_out,
+				int saved_fds[2]);
 int			handle_input_redirection(t_ast_node *node, int fd);
+int			apply_redirections(t_ast_node *node, t_ast_node *last_in,
+				t_ast_node *last_out, int saved_fds[2]);
 void		preprocess_heredocs(t_ast_node *node);
-int			handle_heredoc(char *limiter);
+void		cleanup_heredoc_files(t_ast_node *node);
 
 // SECTION: pipes
 int			kill_on_error(pid_t pid, int mode);

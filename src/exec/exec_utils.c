@@ -6,14 +6,13 @@
 /*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:50:45 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/12 17:20:23 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/12 17:24:10 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/built_ins.h"
 #include "../../inc/minishell.h"
 
-// nie można wywołać ./minishell
 int	is_builtin(char *cmd)
 {
 	if (!ft_strncmp(cmd, "echo", 4))
