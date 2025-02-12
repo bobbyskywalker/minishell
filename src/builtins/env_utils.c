@@ -6,7 +6,7 @@
 /*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 15:05:43 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/08 19:39:50 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/12 18:09:13 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	*get_value(char *str)
 	while (str[i] && str[i] != '=')
 		i++;
 	val_len = ft_strlen(str) - (i + 1);
-	value = (char *)malloc(sizeof(char) * val_len);
+	value = (char *)malloc(sizeof(char) * (val_len + 1));
 	j = 0;
 	while (j < val_len)
 	{
