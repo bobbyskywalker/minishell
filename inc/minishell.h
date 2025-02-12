@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 11:17:53 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/12 13:37:05 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/12 15:44:27 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int			handle_out_app_redirections(t_ast_node *node, int fd,
 				int saved_stdin);
 int			handle_input_redirection(t_ast_node *node, int fd);
 void		preprocess_heredocs(t_ast_node *node);
-int			handle_heredoc(char *limiter);
+void		cleanup_heredoc_files(t_ast_node *node);
 
 // SECTION: pipes
 int			kill_on_error(pid_t pid, int mode);

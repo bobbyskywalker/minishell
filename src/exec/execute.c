@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:09:01 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/12 10:22:31 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/12 16:32:48 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,21 +39,11 @@ int	execute_command(t_ast_node *node, t_shell_data *shell_data)
 	return (-1);
 }
 
-int	execute_redirection(t_ast_node *node, t_shell_data *shell_data, int status,
-		t_ast_node *cmd_node)
+int	apply_single_redirection(t_ast_node *node)
 {
 	int	fd;
-	int	saved_stdin;
-	int	saved_stdout;
 
 	fd = -1;
-	if (!node || node->type != REDIRECT_NODE)
-		return (-1);
-	cmd_node = traverse_to_command(node);
-	if (cmd_node == NULL)
-		return (-1);
-	saved_stdin = dup(STDIN_FILENO);
-	saved_stdout = dup(STDOUT_FILENO);
 	if (node->redirect->type == INPUT_REDIRECT)
 	{
 		if (handle_input_redirection(node, fd) == -1)
@@ -61,11 +51,116 @@ int	execute_redirection(t_ast_node *node, t_shell_data *shell_data, int status,
 	}
 	else
 	{
-		if (handle_out_app_redirections(node, fd, saved_stdin) == -1)
+		if (handle_out_app_redirections(node, fd, -1) == -1)
 			return (-1);
+	}
+	return (0);
+}
+int	handle_dup_errors(int saved_stdin, int saved_stdout)
+{
+	if (saved_stdin == -1 || saved_stdout == -1)
+	{
+		if (saved_stdin != -1)
+			close(saved_stdin);
+		if (saved_stdout != -1)
+			close(saved_stdout);
+		return (-1);
+	}
+	return (0);
+}
+
+int	get_last_in_out(t_ast_node *current, t_ast_node **last_in, t_ast_node **last_out)
+{
+	while (current && current->type == REDIRECT_NODE)
+	{
+		if (current->redirect->type == INPUT_REDIRECT)
+		{
+			if (!last_in)
+				last_in = current;
+		}
+		else
+		{
+			if (!last_out)
+				last_out = current;
+		}
+		current = current->left_child;
+	}
+}
+
+int	execute_redirection(t_ast_node *node, t_shell_data *shell_data, int status,
+		t_ast_node *cmd_node)
+{
+	int			saved_stdin;
+	int			saved_stdout;
+	t_ast_node	*current;
+	t_ast_node	*last_in;
+	t_ast_node	*last_out;
+	int			flags;
+	int			tmp_fd;
+
+	if (!node || node->type != REDIRECT_NODE)
+		return (-1);
+	cmd_node = traverse_to_command(node);
+	if (cmd_node == NULL)
+		return (-1);
+	saved_stdin = dup(STDIN_FILENO);
+	saved_stdout = dup(STDOUT_FILENO);
+	if (handle_dup_errors(saved_stdin, saved_stdout) == -1)
+		return (-1);
+	last_in = NULL;
+	last_out = NULL;
+	current = node;
+	while (current && current->type == REDIRECT_NODE)
+	{
+		if (current->redirect->type == INPUT_REDIRECT)
+		{
+			if (!last_in)
+				last_in = current;
+		}
+		else
+		{
+			if (!last_out)
+				last_out = current;
+		}
+		current = current->left_child;
+	}
+	current = node;
+	while (current && current->type == REDIRECT_NODE)
+	{
+		if (current->redirect->type != INPUT_REDIRECT)
+		{
+			flags = calc_file_flags(current);
+			tmp_fd = open(current->redirect->filename, flags, 0644);
+			if (tmp_fd == -1)
+			{
+				restore_fds(saved_stdin, saved_stdout);
+				return (-1);
+			}
+			if (current == last_out)
+			{
+				if (dup2(tmp_fd, STDOUT_FILENO) == -1)
+				{
+					close(tmp_fd);
+					restore_fds(saved_stdin, saved_stdout);
+					return (-1);
+				}
+			}
+			close(tmp_fd);
+		}
+		else if (current == last_in)
+		{
+			if (handle_input_redirection(current, -1) == -1)
+			{
+				restore_fds(saved_stdin, saved_stdout);
+				return (-1);
+			}
+		}
+		current = current->left_child;
 	}
 	status = execute_ast(cmd_node, shell_data);
 	restore_fds(saved_stdin, saved_stdout);
+	current = node;
+	cleanup_heredoc_files(current);
 	return (status);
 }
 
