@@ -6,7 +6,7 @@
 /*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:09:03 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/12 08:57:49 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/12 10:13:11 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,19 @@ void	shell_loop(t_shell_data *shell_data)
 	char		**tokens;
 	t_ast_node	*node;
 
-	// (void) shell_data;
+	
 	line = NULL;
 	while (1)
 	{
-		line = readline("miniHell $> ");
-		if (!line || !*line)
+		
+		line = readline("minicfel $> ");
+		if (!line)
+			break;
+		if (!*line)
 			continue;
+		printf("debuf\n");
+		// if (!line)
+		// 	continue;
 		add_history(line);
 		tokens = tokenize(line);
 		if (!tokens || !*tokens || !**tokens)
@@ -53,7 +59,7 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	t_shell_data *shell_data;
 
-	set_signals();
+	handle_signals();
 	shell_data = malloc(sizeof(t_shell_data));
 	if (!shell_data)
 		return (1);

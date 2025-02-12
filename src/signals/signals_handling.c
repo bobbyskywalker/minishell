@@ -6,7 +6,7 @@
 /*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 08:07:47 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/12 08:49:51 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/12 10:19:15 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,25 @@ static void	show_new_prompt(int signal)
 	}
 }
 
-static void	set_new_signal()
+static void	set_new_signals(void)
 {
-	struct sigaction	new_act;
+	struct sigaction	sigint_act;
+	struct sigaction	sigquit_act;
 	int					status;
-	
-	sigemptyset(&new_act.sa_mask);
-	new_act.sa_handler = &show_new_prompt;
-	new_act.sa_flags = 0;
-	status = sigaction(SIGINT, &new_act, NULL);
+
+	sigemptyset(&sigint_act.sa_mask);
+	sigint_act.sa_handler = &show_new_prompt;
+	sigint_act.sa_flags = 0;
+	status = sigaction(SIGINT, &sigint_act, NULL);
+	if (status == -1)
+	{
+		perror("sigaction");
+		exit(EXIT_FAILURE);
+	}
+	sigemptyset(&sigquit_act.sa_mask);
+	sigquit_act.sa_handler = SIG_IGN;
+	sigquit_act.sa_flags = 0;
+	status = sigaction(SIGQUIT, &sigquit_act, NULL);
 	if (status == -1)
 	{
 		perror("sigaction");
@@ -39,11 +49,11 @@ static void	set_new_signal()
 	}
 }
 
-static void	stop_terminal_echo()
+static void	stop_terminal_echo(void)
 {
-	struct termios		termios_p;
-	int					status;
-	
+	struct termios	termios_p;
+	int				status;
+
 	status = tcgetattr(STDOUT_FILENO, &termios_p);
 	if (status == -1)
 	{
@@ -59,11 +69,10 @@ static void	stop_terminal_echo()
 	}
 }
 
-void	handle_signals()
+void	handle_signals(void)
 {
 	if (!isatty(STDOUT_FILENO))
 		return ;
 	stop_terminal_echo();
-	set_new_signal();
+	set_new_signals();
 }
-
