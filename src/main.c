@@ -6,7 +6,7 @@
 /*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:09:03 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/12 17:51:20 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/12 18:02:50 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ t_shell_data	*create_shell_data(char **envp)
 // multiple output redirections fixes
 // error handling?
 // memory leaks (tokens not freeable???)
-// quotes on echo
 // ctrl-z acts funny
 // ctrl-c after cat acts funny
 // ft_cd not freeing
