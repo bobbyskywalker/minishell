@@ -11,6 +11,7 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
+#include <termios.h>
 # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -52,5 +53,8 @@ int			execute_ast(t_ast_node *node, t_shell_data *shell_data);
 // SECTION: exec utils
 int			is_builtin(char *cmd);
 int			exec_builtin(t_ast_node node, t_shell_data *shell_data);
+
+// SECTION: signals handling
+void		set_signals();
 
 #endif
