@@ -19,7 +19,7 @@ t_ast_node	*parse_cmd(char ***tokens)
 	int		i;
 	char	*token;
 
-	args = malloc(sizeof(char *) * 100);
+	args = ft_calloc(MAX_ARGS, sizeof(char *));
 	if (!args)
 		return (NULL);
 	i = 0;
@@ -35,9 +35,9 @@ t_ast_node	*parse_cmd(char ***tokens)
 			(*tokens)--;
 			break ;
 		}
-		args[i++] = token;
+		args[i++] = ft_strdup(token);
 	}
-	args[i] = NULL;
+	// args[i] = NULL;
 	return (create_cmd_node(args));
 }
 

@@ -20,7 +20,17 @@ int	execute_command(t_ast_node *node, t_shell_data *shell_data)
 	int		status;
 	pid_t	pid;
 
-	if (prepare_cmd_for_exec(node, shell_data))
+	int cmd_status = prepare_cmd_for_exec(node, shell_data);
+	if (cmd_status == -1)
+	{
+		perror("cmd");
+		ft_arr2d_free(shell_data->env_vars);
+		free_ast(shell_data->root);
+		free(shell_data);
+		rl_clear_history();
+		exit(EXIT_FAILURE);
+	}
+	else if (cmd_status == 1)
 		return (-1);
 	pid = fork();
 	if (!pid)

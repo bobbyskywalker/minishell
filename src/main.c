@@ -12,6 +12,21 @@
 
 #include "../inc/minishell.h"
 
+void	free_tokens(char **tokens)
+{
+	int	i;
+
+	if (!tokens)
+		return ;
+	i = 0;
+	while (tokens[i])
+	{
+		free(tokens[i]);
+		i++;
+	}
+	free(tokens);
+}
+
 void	shell_loop(t_shell_data *shell_data)
 {
 	char		*line;
@@ -33,9 +48,9 @@ void	shell_loop(t_shell_data *shell_data)
 			continue ;
 		node = build_ast(tokens);
 		shell_data->root = node;
-		free(tokens);
 		execute_ast(node, shell_data);
 		free_ast(shell_data->root);
+		free_tokens(tokens);
 	}
 }
 
@@ -56,6 +71,8 @@ t_shell_data	*create_shell_data(char **envp)
 }
 
 // TODO:
+// leaks with pipes
+// echo fails
 // multiple output redirections fixes
 // error handling?
 // memory leaks (tokens not freeable???)
