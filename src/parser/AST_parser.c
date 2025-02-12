@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   AST_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 13:27:53 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/10 14:12:41 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/12 16:55:45 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,26 +41,16 @@ t_ast_node	*parse_cmd(char ***tokens)
 	return (create_cmd_node(args));
 }
 
-t_ast_node	*parse_pipeline(char ***tokens)
-{
-	t_ast_node	*node;
-
-	node = parse_pipeline_part(tokens);
-	node = parse_redirections_part(tokens, node);
-	return (node);
-}
-
 // highest level parser function
 // utilizes recursion to travel
 // through the expression and build the AST
-t_ast_node	*parse_expression(char ***tokens)
-{
-	return (parse_pipeline(tokens));
-}
-
 t_ast_node	*build_ast(char **tokens)
 {
-	return (parse_expression(&tokens));
+	t_ast_node	*node;
+
+	node = parse_pipeline_part(&tokens);
+	node = parse_redirections_part(&tokens, node);
+	return (node);
 }
 
 void	print_ast(t_ast_node *node, int depth)
