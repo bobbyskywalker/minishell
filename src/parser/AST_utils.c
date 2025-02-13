@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:08:54 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/13 12:45:02 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/13 16:03:24 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,9 @@ void	free_ast(t_ast_node *root)
 	free_ast(root->right_child);
 	if (root->type == COMMAND_NODE && root->command->args)
 	{
-		// ft_2d_strprintf(root->command->args);
 		ft_arr2d_free(root->command->args);
-		// free(root->command->args);
 		free(root->command);
-	}	
+	}
 	if (root->type == REDIRECT_NODE)
 	{
 		if (root->redirect->filename)

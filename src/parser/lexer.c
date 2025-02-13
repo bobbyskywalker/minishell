@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:08:51 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/13 12:22:58 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/13 16:14:03 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,18 +41,19 @@ char	*get_token(char *source, char *token, int *end_flag)
 
 // returns token, why would you ask? beacuse it needs to be freed
 // and norminette is a hoe
-char	*tokenize_loop(char *source, char **tokens, int i, int end_flag)
+void	tokenize_loop(char *source, char **tokens, int end_flag)
 {
-	char	*token;
-
+	int i = 0;
 	while (1)
 	{
-		token = ft_calloc((ft_strlen(source) + 1), sizeof(char));
-		if (!token)
-			return (NULL);
-		source = get_token(source, token, &end_flag);
-		if (!token || !*token || (!source && !end_flag))
+		tokens[i] = ft_calloc((ft_strlen(source) + 1), sizeof(char));
+		if (!tokens[i])
+			return ;
+		source = get_token(source, tokens[i], &end_flag);
+		// printf("cur token: %s\n", tokens[i]);
+		if (tokens[i] == NULL || !tokens[i][0] || (!source && !end_flag))
 		{
+			free(tokens[i]);
 			tokens[i] = NULL;
 			break ;
 		}
@@ -60,23 +61,24 @@ char	*tokenize_loop(char *source, char **tokens, int i, int end_flag)
 		{
 			if (end_flag == 1)
 			{
-				free(token);
+				free(tokens[i]);
 				tokens[i] = NULL;
 				break ;
 			}
-			tokens[i++] = ft_strdup(token);
-			free(token);
-			token = NULL;
+			i++;
+			tokens[i] = NULL;
+			// tokens[i++] = ft_strdup(token);
+			// free(token);
+			// token = NULL;
 		}
 	}
-	return (token);
 }
 
 char	**tokenize(char *source)
 {
 	int		i;
 	char	**tokens;
-	char	*token;
+	// char	*token;	
 	int		end_flag;
 
 	if (!source || !*source)
@@ -86,9 +88,9 @@ char	**tokenize(char *source)
 	if (!tokens)
 		return (NULL);
 	end_flag = 0;
-	token = tokenize_loop(source, tokens, i, end_flag);
-	if (token)
-		free(token);
+	tokenize_loop(source, tokens, end_flag);
+	// if (token)
+	// 	free(token);
 	return (tokens);
 }
 
