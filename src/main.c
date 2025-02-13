@@ -12,21 +12,6 @@
 
 #include "../inc/minishell.h"
 
-void	free_tokens(char **tokens)
-{
-	int	i;
-
-	if (!tokens)
-		return ;
-	i = 0;
-	while (tokens[i])
-	{
-		free(tokens[i]);
-		i++;
-	}
-	free(tokens);
-}
-
 void	shell_loop(t_shell_data *shell_data)
 {
 	char		*line;
@@ -74,14 +59,8 @@ t_shell_data	*create_shell_data(char **envp)
 }
 
 // TODO:
-// leaks with pipes
 // echo fails
-// multiple output redirections fixes
-// error handling?
-// memory leaks (tokens not freeable???)
-// ctrl-z acts funny
-// ctrl-c after cat acts funny
-// ft_cd not freeing
+// multiple input/output redirections fixes
 int	main(int ac, char **av, char **envp)
 {
 	t_shell_data	*shell_data;

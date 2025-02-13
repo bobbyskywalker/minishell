@@ -75,8 +75,6 @@ typedef struct s_shell_data
 	t_ast_node			*root;
 }						t_shell_data;
 
-void	free_tokens(char **tokens);
-
 // SECTION: lexer
 char					**tokenize(char *source);
 void					handle_start_state(char **source, char *token,
