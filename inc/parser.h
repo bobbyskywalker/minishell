@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 11:18:34 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/12 12:12:20 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/13 10:48:41 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,10 @@ typedef struct s_shell_data
 	char				**env_vars;
 	int					last_cmd_status;
 	t_ast_node			*root;
+	char				**tokens;
 }						t_shell_data;
+
+void	free_tokens(char **tokens);
 
 // SECTION: lexer
 char					**tokenize(char *source);
