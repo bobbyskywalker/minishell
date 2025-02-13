@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:09:03 by agarbacz          #+#    #+#             */
 /*   Updated: 2025/02/13 14:13:29 by jzackiew         ###   ########.fr       */
@@ -12,12 +12,28 @@
 
 #include "../inc/minishell.h"
 
+void	free_tokens(char **tokens)
+{
+	int	i;
+
+	if (!tokens)
+		return ;
+	i = 0;
+	while (tokens[i])
+	{
+		free(tokens[i]);
+		i++;
+	}
+	free(tokens);
+}
+
 void	shell_loop(t_shell_data *shell_data)
 {
 	char		*line;
 	char		**tokens;
 	t_ast_node	*node;
 
+	(void) shell_data;
 	node = NULL;
 	while (1)
 	{
@@ -37,6 +53,9 @@ void	shell_loop(t_shell_data *shell_data)
 		free(tokens);
 		reset_signals_handling();
 		execute_ast(node, shell_data);
+		// if (shell_data->last_cmd_status != 0)
+		// 	free_tokens(tokens);
+		// else
 		free_ast(shell_data->root);
 	}
 }
@@ -58,6 +77,8 @@ t_shell_data	*create_shell_data(char **envp)
 }
 
 // TODO:
+// leaks with pipes
+// echo fails
 // multiple output redirections fixes
 // error handling?
 // memory leaks (tokens not freeable???)
