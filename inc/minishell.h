@@ -14,6 +14,8 @@
 # define MINISHELL_H
 
 # define _GNU_SOURCE
+# define MAX_ARGS 100
+
 # include "../lib/libft/gnl/get_next_line.h"
 # include "../lib/libft/libft.h"
 # include "built_ins.h"
