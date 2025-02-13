@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 16:09:36 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/10 13:32:52 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/13 16:57:33 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ t_ast_node	*parse_pipeline_part(char ***tokens)
 			right = parse_redirections_part(tokens, right);
 			right = parse_cmd(tokens);
 			left = create_operator_node(PIPE_NODE, left, right);
+			free(token);
 		}
 		else
 		{
@@ -54,6 +55,7 @@ t_redirect_type	assign_redirection_type(char *token)
 		type = HEREDOC;
 	else
 		type = 0;
+	free(token);
 	return (type);
 }
 

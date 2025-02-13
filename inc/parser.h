@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 11:18:34 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/13 16:13:57 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/13 16:41:30 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_redirect
 typedef struct s_command
 {
 	char				**args;
+	char 				*pipe;
 }						t_command;
 
 typedef struct s_ast_node
