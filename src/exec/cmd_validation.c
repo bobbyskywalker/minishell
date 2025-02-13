@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_validation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:29:58 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/12 10:31:52 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/13 12:47:15 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,5 @@ char	*validate_command(char *cmd, char **dirs, t_shell_data *shell_data)
 		i++;
 	}
 	set_error_status(cmd, shell_data);
-	return (NULL);
+	return (cmd);
 }
