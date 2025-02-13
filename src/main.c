@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:09:03 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/13 12:20:56 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/13 16:13:48 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	shell_loop(t_shell_data *shell_data)
 	char		**tokens;
 	t_ast_node	*node;
 
+	(void) shell_data;
 	node = NULL;
 	while (1)
 	{
@@ -43,18 +44,17 @@ void	shell_loop(t_shell_data *shell_data)
 			continue ;
 		add_history(line);
 		tokens = tokenize(line);
-		shell_data->tokens = tokens;
 		free(line);
 		if (!tokens || !*tokens || !**tokens)
 			continue ;
 		node = build_ast(tokens);
 		shell_data->root = node;
+		free(tokens);
 		execute_ast(node, shell_data);
 		// if (shell_data->last_cmd_status != 0)
 		// 	free_tokens(tokens);
 		// else
 		free_ast(shell_data->root);
-		free(tokens);
 	}
 }
 
