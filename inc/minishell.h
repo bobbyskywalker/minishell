@@ -14,6 +14,8 @@
 # define MINISHELL_H
 
 # define _GNU_SOURCE
+# define MAX_ARGS 100
+
 # include "../lib/libft/gnl/get_next_line.h"
 # include "../lib/libft/libft.h"
 # include "built_ins.h"
@@ -30,9 +32,6 @@
 # include <sys/wait.h>
 # include <termios.h>
 # include <unistd.h>
-
-// SECTION: lexer
-char		**tokenize(char *source);
 
 // SECTION: env variables
 int			swap_env_val(t_ast_node *node, t_shell_data shell_data);
