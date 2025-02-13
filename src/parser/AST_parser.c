@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   AST_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 13:27:53 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/12 16:55:45 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/13 12:07:54 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_ast_node	*parse_cmd(char ***tokens)
 			(*tokens)--;
 			break ;
 		}
-		args[i++] = ft_strdup(token);
+		args[i++] = token;
 	}
 	// args[i] = NULL;
 	return (create_cmd_node(args));

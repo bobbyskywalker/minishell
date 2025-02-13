@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_ins_rest.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:08:59 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/12 18:10:15 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/13 12:06:34 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void	ft_exit(t_shell_data *shell_data)
 {
 	ft_arr2d_free(shell_data->env_vars);
 	free_ast(shell_data->root);
+	free_tokens(shell_data->tokens);
 	free(shell_data);
 	rl_clear_history();
 	exit(EXIT_SUCCESS);
