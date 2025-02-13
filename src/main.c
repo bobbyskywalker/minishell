@@ -37,6 +37,7 @@ void	shell_loop(t_shell_data *shell_data)
 	node = NULL;
 	while (1)
 	{
+		set_signals_handling();
 		line = readline("minicfel $> ");
 		if (!line)
 			break ;
@@ -50,6 +51,7 @@ void	shell_loop(t_shell_data *shell_data)
 		node = build_ast(tokens);
 		shell_data->root = node;
 		free(tokens);
+		reset_signals_handling();
 		execute_ast(node, shell_data);
 		free_ast(shell_data->root);
 	}
@@ -90,7 +92,6 @@ int	main(int ac, char **av, char **envp)
 		printf("valid exec.: ./minishell");
 		return (1);
 	}
-	handle_signals();
 	shell_data = create_shell_data(envp);
 	shell_loop(shell_data);
 	rl_clear_history();
