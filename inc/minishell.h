@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 11:17:53 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/12 17:08:52 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/13 16:13:26 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,6 @@
 # include <sys/wait.h>
 # include <termios.h>
 # include <unistd.h>
-
-// SECTION: lexer
-char		**tokenize(char *source);
 
 // SECTION: env variables
 int			swap_env_val(t_ast_node *node, t_shell_data shell_data);
