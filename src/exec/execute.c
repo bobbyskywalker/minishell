@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:09:01 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/12 17:24:16 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/13 14:24:43 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,14 @@ int	execute_command(t_ast_node *node, t_shell_data *shell_data)
 	int		status;
 	pid_t	pid;
 
-	if (prepare_cmd_for_exec(node, shell_data))
+	int cmd_status = prepare_cmd_for_exec(node, shell_data);
+	if (cmd_status == -1)
+	{
+		shell_data->last_cmd_status = 127;
+		perror("cmd");
+		return (-1);
+	}
+	else if (cmd_status == 1)
 		return (-1);
 	pid = fork();
 	if (!pid)
