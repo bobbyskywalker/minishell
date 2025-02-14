@@ -6,7 +6,7 @@
 /*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 13:49:37 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/13 14:16:58 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/14 13:35:36 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,12 @@ static void	restore_default_signals(void)
 	sigemptyset(&sigact.sa_mask);
 	sigact.sa_handler = SIG_DFL;
 	sigact.sa_flags = 0;
-
 	status = sigaction(SIGINT, &sigact, NULL);
 	if (status == -1)
 	{
 		perror("sigaction");
 		exit(EXIT_FAILURE);
 	}
-
 	status = sigaction(SIGQUIT, &sigact, NULL);
 	if (status == -1)
 	{
