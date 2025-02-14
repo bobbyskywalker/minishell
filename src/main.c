@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:09:03 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/14 13:19:04 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/14 13:35:55 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	shell_loop(t_shell_data *shell_data)
 
 t_shell_data	*create_shell_data(char **envp)
 {
-	t_shell_data *shell_data;
+	t_shell_data	*shell_data;
 
 	shell_data = malloc(sizeof(t_shell_data));
 	if (!shell_data)
