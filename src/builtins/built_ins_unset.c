@@ -6,7 +6,7 @@
 /*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:12:30 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/14 16:13:21 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/14 17:09:12 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static void	remove_env(char *env, t_shell_data *shell_data)
 	vars_count = ft_2d_strlen(shell_data->env_vars);
 	if (id >= 0)
 	{
+		free(shell_data->env_vars[id]);
 		while (shell_data->env_vars[id])
 		{
 			shell_data->env_vars[id] = shell_data->env_vars[id + 1];
