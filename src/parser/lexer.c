@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:08:51 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/13 16:14:03 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/14 13:29:18 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,8 @@ char	*get_token(char *source, char *token, int *end_flag)
 	return (source);
 }
 
-void	tokenize_loop(char *source, char **tokens, int end_flag)
+void	tokenize_loop(char *source, char **tokens, int end_flag, int i)
 {
-	int i = 0;
 	while (1)
 	{
 		tokens[i] = ft_calloc((ft_strlen(source) + 1), sizeof(char));
@@ -79,7 +78,7 @@ char	**tokenize(char *source)
 	if (!tokens)
 		return (NULL);
 	end_flag = 0;
-	tokenize_loop(source, tokens, end_flag);
+	tokenize_loop(source, tokens, end_flag, 0);
 	return (tokens);
 }
 

@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 16:10:36 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/12 17:11:33 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/14 12:48:19 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,18 +56,18 @@ int	handle_output_redirect(t_ast_node *current, t_ast_node *last_out,
 void	get_last_in_and_out(t_ast_node *node, t_ast_node **last_in,
 		t_ast_node **last_out)
 {
-	t_ast_node    *current;
+	t_ast_node	*current;
 
-    current = node;
-    *last_in = NULL;
-    *last_out = NULL;
-    while (current && current->type == REDIRECT_NODE)
-    {
-        if (current->redirect->type == INPUT_REDIRECT && !*last_in)
-            *last_in = current;
-        else if (current->redirect->type != INPUT_REDIRECT && !*last_out)
-            *last_out = current;
-        current = current->left_child;
+	current = node;
+	*last_in = NULL;
+	*last_out = NULL;
+	while (current && current->type == REDIRECT_NODE)
+	{
+		if (current->redirect->type == INPUT_REDIRECT && !*last_in)
+			*last_in = current;
+		else if (current->redirect->type != INPUT_REDIRECT && !*last_out)
+			*last_out = current;
+		current = current->left_child;
 	}
 }
 
