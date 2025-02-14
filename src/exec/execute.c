@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:09:01 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/14 13:11:04 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/14 13:19:55 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 // - tree non-existent
 // - command execution failure
 
-int handle_cmd_errors(int cmd_status, t_shell_data *shell_data)
+int	handle_cmd_errors(int cmd_status, t_shell_data *shell_data)
 {
 	if (cmd_status == -1)
 	{
@@ -27,13 +27,6 @@ int handle_cmd_errors(int cmd_status, t_shell_data *shell_data)
 	else if (cmd_status == 1)
 		return (-1);
 	return (0);
-}
-
-void	cleanup(t_shell_data *shell_data)
-{
-	ft_arr2d_free(shell_data->env_vars);
-	free_ast(shell_data->root);
-	free(shell_data);
 }
 
 int	execute_command(t_ast_node *node, t_shell_data *shell_data)
@@ -51,9 +44,7 @@ int	execute_command(t_ast_node *node, t_shell_data *shell_data)
 		execve(node->command->args[0], node->command->args,
 			shell_data->env_vars);
 		perror("execve");
-		ft_arr2d_free(shell_data->env_vars);
-		free_ast(shell_data->root);
-		free(shell_data);
+		cleanup(shell_data);
 		rl_clear_history();
 		exit(EXIT_FAILURE);
 	}

@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 16:28:09 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/14 12:45:54 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/14 13:14:30 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,7 @@ void	exec_first_child(int pipe_fd[2], t_ast_node *node,
 	dup2(pipe_fd[1], STDOUT_FILENO);
 	close(pipe_fd[1]);
 	status = execute_ast(node->left_child, shell_data);
-	ft_arr2d_free(shell_data->env_vars);
-	free_ast(shell_data->root);
-	free(shell_data);
+	cleanup(shell_data);
 	rl_clear_history();
 	exit(status);
 }
@@ -59,9 +57,7 @@ void	exec_second_child(int pipe_fd[2], t_ast_node *node,
 	dup2(pipe_fd[0], STDIN_FILENO);
 	close(pipe_fd[0]);
 	status = execute_ast(node->right_child, shell_data);
-	ft_arr2d_free(shell_data->env_vars);
-	free_ast(shell_data->root);
-	free(shell_data);
+	cleanup(shell_data);
 	rl_clear_history();
 	exit(status);
 }
