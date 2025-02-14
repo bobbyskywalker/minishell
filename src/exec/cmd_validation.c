@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:29:58 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/13 16:27:38 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/14 12:33:26 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,13 @@ char	*validate_command(char *cmd, char **dirs, t_shell_data *shell_data)
 		free(cmd_path);
 		if (!access(path, F_OK))
 		{
+			shell_data->last_cmd_status = 0;
 			free(cmd);
 			return (path);
 		}
 		if (!access(cmd, F_OK))
 		{
+			shell_data->last_cmd_status = 0;
 			free(path);
 			return (cmd);
 		}
