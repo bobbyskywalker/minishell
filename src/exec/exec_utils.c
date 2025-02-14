@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:50:45 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/13 12:43:41 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/14 12:32:38 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,9 @@ int	prepare_cmd_for_exec(t_ast_node *node, t_shell_data *shell_data)
 			shell_data);
 	ft_arr2d_free(dirs);
 	if (shell_data->last_cmd_status == 127)
+	{
 		return (-1);
+	}
 	return (0);
 }
 
