@@ -6,7 +6,7 @@
 /*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 08:07:47 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/13 14:16:55 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/14 13:35:31 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,3 @@ void	set_signals_handling(void)
 	stop_terminal_echo();
 	set_new_signals();
 }
-
