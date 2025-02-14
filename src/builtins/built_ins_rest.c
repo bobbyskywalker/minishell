@@ -6,7 +6,7 @@
 /*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:08:59 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/14 09:26:49 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/14 13:46:14 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	ft_echo(char **args)
 
 	is_flag = 0;
 	i = -1;
-	if (!ft_strncmp(args[i], "-n", 3))
+	if (!ft_strncmp(args[0], "-n", 3))
 	{
 		is_flag = 1;
 		i++;
@@ -31,7 +31,8 @@ int	ft_echo(char **args)
 		while (args[i][++j])
 			if (args[i][j] != '"')
 				write(STDOUT_FILENO, &args[i][j], 1);
-		write(STDOUT_FILENO, " ", 1);
+		if (args[i + 1])
+			write(STDOUT_FILENO, " ", 1);
 	}
 	if (!is_flag)
 		ft_printf("\n");
