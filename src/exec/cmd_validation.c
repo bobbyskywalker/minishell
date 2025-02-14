@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:29:58 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/14 12:33:26 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/14 12:58:06 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,23 +51,20 @@ char	*validate_command(char *cmd, char **dirs, t_shell_data *shell_data)
 	i = 0;
 	while (dirs[i])
 	{
-		cmd_path = ft_strjoin(dirs[i], "/");
+		cmd_path = ft_strjoin(dirs[i++], "/");
 		path = ft_strjoin(cmd_path, cmd);
 		free(cmd_path);
 		if (!access(path, F_OK))
 		{
 			shell_data->last_cmd_status = 0;
-			free(cmd);
-			return (path);
+			return (free(cmd), path);
 		}
 		if (!access(cmd, F_OK))
 		{
 			shell_data->last_cmd_status = 0;
-			free(path);
-			return (cmd);
+			return (free(path), cmd);
 		}
 		free(path);
-		i++;
 	}
 	set_error_status(cmd, shell_data);
 	return (cmd);
