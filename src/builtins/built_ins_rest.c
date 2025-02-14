@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_ins_rest.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:08:59 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/13 13:37:40 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/14 09:26:49 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,23 @@
 int	ft_echo(char **args)
 {
 	size_t	i;
+	size_t	j;
 	int		is_flag;
 
 	is_flag = 0;
-	i = 0;
+	i = -1;
 	if (!ft_strncmp(args[i], "-n", 3))
 	{
 		is_flag = 1;
 		i++;
 	}
-	while (args[i])
+	while (args[++i])
 	{
-		while (*args[i])
-		{
-			if (*args[i] != '"')
-				write(STDOUT_FILENO, args[i], 1);
-			args[i]++;
-		}
-		if (args[i + 1])
-			ft_printf(" ");
-		i++;
+		j = -1;
+		while (args[i][++j])
+			if (args[i][j] != '"')
+				write(STDOUT_FILENO, &args[i][j], 1);
+		write(STDOUT_FILENO, " ", 1);
 	}
 	if (!is_flag)
 		ft_printf("\n");
@@ -84,7 +81,6 @@ void	ft_exit(t_shell_data *shell_data)
 {
 	ft_arr2d_free(shell_data->env_vars);
 	free_ast(shell_data->root);
-	// free_tokens(shell_data->tokens);
 	free(shell_data);
 	rl_clear_history();
 	exit(EXIT_SUCCESS);
