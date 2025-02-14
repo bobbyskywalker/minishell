@@ -6,7 +6,7 @@
 /*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:08:59 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/14 13:46:14 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/14 15:24:54 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,12 @@ int	ft_cd(char **args, t_shell_data shell_data)
 
 	args_count = ft_2d_strlen(args);
 	if (args_count > 1)
-		return (ft_printf("cd: string not in pwd: %s", args[0]), -1);
+		return (ft_printf("cd: string not in pwd: %s", args[0]), 1);
 	if (args_count < 1)
 	{
 		id = is_key_in_envs("HOME", shell_data.env_vars);
 		if (id == -1)
-			return (1);
+			return (0);
 		path = get_value(shell_data.env_vars[id]);
 	}
 	else
@@ -61,9 +61,9 @@ int	ft_cd(char **args, t_shell_data shell_data)
 	status = chdir(path);
 	if (status < 0)
 		return (ft_printf("cd: no such file or directory: %s\n", path),
-			free(path), -1);
+			free(path), 1);
 	free(path);
-	return (1);
+	return (0);
 }
 
 int	ft_pwd(void)
