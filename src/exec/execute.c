@@ -6,7 +6,7 @@
 /*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:09:01 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/14 16:29:28 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/14 17:11:18 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@
 // - tree non-existent
 // - command execution failure
 
-int	handle_cmd_errors(int cmd_status, t_shell_data *shell_data, t_ast_node *node)
+int	handle_cmd_errors(int cmd_status, t_shell_data *shell_data,
+		t_ast_node *node)
 {
 	if (cmd_status == -1)
 	{
