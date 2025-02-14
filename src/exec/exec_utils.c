@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:50:45 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/14 12:32:38 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/14 13:03:24 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,35 +84,6 @@ int	calc_file_flags(t_ast_node *node)
 	else
 		flags |= O_TRUNC;
 	return (flags);
-}
-
-int	swap_env_val(t_ast_node *node, t_shell_data shell_data)
-{
-	int	i;
-	int	key_id;
-
-	i = 0;
-	while (node->command->args[i])
-	{
-		if (node->command->args[i][0] == '$')
-		{
-			if (node->command->args[i][1] == '?')
-			{
-				free(node->command->args[i]);
-				node->command->args[i] = ft_itoa(shell_data.last_cmd_status);
-				continue ;
-			}
-			key_id = is_key_in_envs(&node->command->args[i][1],
-					shell_data.env_vars);
-			free(node->command->args[i]);
-			if (key_id == -1)
-				node->command->args[i] = ft_strdup("");
-			else
-				node->command->args[i] = get_value(shell_data.env_vars[key_id]);
-		}
-		i++;
-	}
-	return (1);
 }
 
 void	process_env_vars(t_ast_node *node, t_shell_data shell_data)

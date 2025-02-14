@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 15:05:43 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/12 18:09:13 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/14 13:03:42 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,4 +99,33 @@ int	is_key_in_envs(char *str, char **envs)
 	}
 	free(key_str);
 	return (-1);
+}
+
+int	swap_env_val(t_ast_node *node, t_shell_data shell_data)
+{
+	int	i;
+	int	key_id;
+
+	i = 0;
+	while (node->command->args[i])
+	{
+		if (node->command->args[i][0] == '$')
+		{
+			if (node->command->args[i][1] == '?')
+			{
+				free(node->command->args[i]);
+				node->command->args[i] = ft_itoa(shell_data.last_cmd_status);
+				continue ;
+			}
+			key_id = is_key_in_envs(&node->command->args[i][1],
+					shell_data.env_vars);
+			free(node->command->args[i]);
+			if (key_id == -1)
+				node->command->args[i] = ft_strdup("");
+			else
+				node->command->args[i] = get_value(shell_data.env_vars[key_id]);
+		}
+		i++;
+	}
+	return (1);
 }

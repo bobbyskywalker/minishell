@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:09:03 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/13 16:54:34 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/14 13:09:48 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,6 @@ t_shell_data	*create_shell_data(char **envp)
 	return (shell_data);
 }
 
-// TODO:
-// echo fails
-// multiple input/output redirections fixes
 int	main(int ac, char **av, char **envp)
 {
 	t_shell_data	*shell_data;
