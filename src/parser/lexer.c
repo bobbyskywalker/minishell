@@ -39,8 +39,6 @@ char	*get_token(char *source, char *token, int *end_flag)
 	return (source);
 }
 
-// returns token, why would you ask? beacuse it needs to be freed
-// and norminette is a hoe
 void	tokenize_loop(char *source, char **tokens, int end_flag)
 {
 	int i = 0;
@@ -50,7 +48,6 @@ void	tokenize_loop(char *source, char **tokens, int end_flag)
 		if (!tokens[i])
 			return ;
 		source = get_token(source, tokens[i], &end_flag);
-		// printf("cur token: %s\n", tokens[i]);
 		if (tokens[i] == NULL || !tokens[i][0] || (!source && !end_flag))
 		{
 			free(tokens[i]);
@@ -67,30 +64,22 @@ void	tokenize_loop(char *source, char **tokens, int end_flag)
 			}
 			i++;
 			tokens[i] = NULL;
-			// tokens[i++] = ft_strdup(token);
-			// free(token);
-			// token = NULL;
 		}
 	}
 }
 
 char	**tokenize(char *source)
 {
-	int		i;
 	char	**tokens;
-	// char	*token;	
 	int		end_flag;
 
 	if (!source || !*source)
 		return (NULL);
-	i = 0;
 	tokens = ft_calloc((ft_strlen(source) + 1), sizeof(char *));
 	if (!tokens)
 		return (NULL);
 	end_flag = 0;
 	tokenize_loop(source, tokens, end_flag);
-	// if (token)
-	// 	free(token);
 	return (tokens);
 }
 
