@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 13:27:53 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/13 16:45:18 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/14 13:20:58 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ t_ast_node	*parse_cmd(char ***tokens)
 		}
 		args[i++] = token;
 	}
-	// args[i] = NULL;
 	return (create_cmd_node(args));
 }
 
@@ -51,31 +50,4 @@ t_ast_node	*build_ast(char **tokens)
 	node = parse_pipeline_part(&tokens);
 	node = parse_redirections_part(&tokens, node);
 	return (node);
-}
-
-void	print_ast(t_ast_node *node, int depth)
-{
-	if (!node)
-		return ;
-	for (int i = 0; i < depth; i++)
-		printf("  ");
-	if (node->type == COMMAND_NODE)
-	{
-		printf("CMD: ");
-		for (int i = 0; node->command->args[i]; i++)
-			printf("%s ", node->command->args[i]);
-		printf("\n");
-	}
-	else if (node->type == PIPE_NODE)
-	{
-		printf("PIPE\n");
-	}
-	else if (node->type == REDIRECT_NODE)
-	{
-		printf("REDIRECT (%s) -> %s\n",
-			(node->redirect->type == INPUT_REDIRECT) ? "<" : (node->redirect->type == OUTPUT_REDIRECT) ? ">" : ">>",
-			node->redirect->filename);
-	}
-	print_ast(node->left_child, depth + 1);
-	print_ast(node->right_child, depth + 1);
 }

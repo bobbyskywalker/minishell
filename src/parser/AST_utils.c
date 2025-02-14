@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:08:54 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/13 17:05:44 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/14 13:23:01 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ t_ast_node	*create_redirect_node(t_redirect_type type, char *filename,
 	redirect->filename = NULL;
 	if (filename)
 		redirect->filename = ft_strdup(filename);
-	free(filename);
 	redirect->limiter = NULL;
 	node->type = REDIRECT_NODE;
 	node->left_child = child;
@@ -77,7 +76,7 @@ t_ast_node	*create_redirect_node(t_redirect_type type, char *filename,
 	node->redirect = redirect;
 	node->redirect->is_heredoc = false;
 	node->redirect->limiter_assigned = false;
-	return (node);
+	return (free(filename), node);
 }
 
 // frees the syntax tree recursively
