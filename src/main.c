@@ -6,26 +6,11 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:09:03 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/13 16:13:48 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/13 16:54:34 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-void	free_tokens(char **tokens)
-{
-	int	i;
-
-	if (!tokens)
-		return ;
-	i = 0;
-	while (tokens[i])
-	{
-		free(tokens[i]);
-		i++;
-	}
-	free(tokens);
-}
 
 void	shell_loop(t_shell_data *shell_data)
 {
@@ -37,6 +22,7 @@ void	shell_loop(t_shell_data *shell_data)
 	node = NULL;
 	while (1)
 	{
+		set_signals_handling();
 		line = readline("minicfel $> ");
 		if (!line)
 			break ;
@@ -50,10 +36,8 @@ void	shell_loop(t_shell_data *shell_data)
 		node = build_ast(tokens);
 		shell_data->root = node;
 		free(tokens);
+		reset_signals_handling();
 		execute_ast(node, shell_data);
-		// if (shell_data->last_cmd_status != 0)
-		// 	free_tokens(tokens);
-		// else
 		free_ast(shell_data->root);
 	}
 }
@@ -75,14 +59,8 @@ t_shell_data	*create_shell_data(char **envp)
 }
 
 // TODO:
-// leaks with pipes
 // echo fails
-// multiple output redirections fixes
-// error handling?
-// memory leaks (tokens not freeable???)
-// ctrl-z acts funny
-// ctrl-c after cat acts funny
-// ft_cd not freeing
+// multiple input/output redirections fixes
 int	main(int ac, char **av, char **envp)
 {
 	t_shell_data	*shell_data;
@@ -93,7 +71,6 @@ int	main(int ac, char **av, char **envp)
 		printf("valid exec.: ./minishell");
 		return (1);
 	}
-	handle_signals();
 	shell_data = create_shell_data(envp);
 	shell_loop(shell_data);
 	rl_clear_history();
