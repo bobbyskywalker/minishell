@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:50:45 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/14 13:03:24 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/14 16:23:52 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ int	prepare_cmd_for_exec(t_ast_node *node, t_shell_data *shell_data)
 		return (1);
 	}
 	dirs = get_path_env_var(shell_data->env_vars);
+	if (!dirs)
+		return -1;
 	node->command->args[0] = validate_command(node->command->args[0], dirs,
 			shell_data);
 	ft_arr2d_free(dirs);
