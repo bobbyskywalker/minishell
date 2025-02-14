@@ -6,7 +6,7 @@
 /*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:09:03 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/14 13:35:55 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/14 18:20:41 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	shell_loop(t_shell_data *shell_data)
 		node = build_ast(tokens);
 		shell_data->root = node;
 		free(tokens);
-		reset_signals_handling();
+		//reset_signals_handling();
 		execute_ast(node, shell_data);
 		free_ast(shell_data->root);
 	}
@@ -57,6 +57,8 @@ t_shell_data	*create_shell_data(char **envp)
 	return (shell_data);
 }
 
+//TODO:
+//signal -> sleep ->last_cmd_status = 130
 int	main(int ac, char **av, char **envp)
 {
 	t_shell_data	*shell_data;
