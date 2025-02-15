@@ -53,6 +53,8 @@ int	handle_output_redirect(t_ast_node *current, t_ast_node *last_out,
 	return (0);
 }
 
+// function to find the rightmost out-redirs and in-redirs (if present)
+// in order to mimic bash behaviour on multiple and/or mixed redirections
 void	get_last_in_and_out(t_ast_node *node, t_ast_node **last_in,
 		t_ast_node **last_out)
 {
@@ -71,6 +73,8 @@ void	get_last_in_and_out(t_ast_node *node, t_ast_node **last_in,
 	}
 }
 
+// redirections 'executor'
+// applies redirections according to their type
 int	apply_redirections(t_ast_node *node, t_ast_node *last_in,
 		t_ast_node *last_out, int saved_fds[2])
 {

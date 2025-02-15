@@ -12,6 +12,9 @@
 
 #include "../../inc/minishell.h"
 
+// operates on two modes:
+// 1- doesn't kill the process on error
+// 2- kills the process on error
 int	kill_on_error(pid_t pid, int mode)
 {
 	if (mode == 1)

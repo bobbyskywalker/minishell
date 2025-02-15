@@ -51,7 +51,7 @@ int	exec_builtin(t_ast_node node, t_shell_data *shell_data)
 	return (1);
 }
 
-// return non-zero on error
+// returns non-zero on error
 int	prepare_cmd_for_exec(t_ast_node *node, t_shell_data *shell_data)
 {
 	char	**dirs;
@@ -70,12 +70,12 @@ int	prepare_cmd_for_exec(t_ast_node *node, t_shell_data *shell_data)
 			shell_data);
 	ft_arr2d_free(dirs);
 	if (shell_data->last_cmd_status == 127)
-	{
 		return (-1);
-	}
 	return (0);
 }
 
+// utility to calculate file flags for open()
+// differences vary on the redirect type
 int	calc_file_flags(t_ast_node *node)
 {
 	int	flags;
@@ -88,6 +88,8 @@ int	calc_file_flags(t_ast_node *node)
 	return (flags);
 }
 
+// utility to preprocess & swap environment variables
+// with their values before executing the tree
 void	process_env_vars(t_ast_node *node, t_shell_data shell_data)
 {
 	int	status;
