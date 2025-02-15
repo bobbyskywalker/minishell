@@ -12,6 +12,8 @@
 
 #include "../../inc/minishell.h"
 
+// creates a valid command-type node
+// with attributes as in the structure(s) declaration
 t_ast_node	*create_cmd_node(char **args)
 {
 	t_ast_node	*node;
@@ -49,6 +51,8 @@ t_ast_node	*create_operator_node(t_node_type type, t_ast_node *left,
 	return (node);
 }
 
+// creates a valid redirect node with attributes
+// as in the structure(s) declaration
 t_ast_node	*create_redirect_node(t_redirect_type type, char *filename,
 		t_ast_node *child)
 {

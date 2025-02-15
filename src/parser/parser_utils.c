@@ -12,6 +12,7 @@
 
 #include "../../inc/minishell.h"
 
+// parses the pipeline part of the expression
 t_ast_node	*parse_pipeline_part(char ***tokens)
 {
 	t_ast_node	*left;
@@ -41,6 +42,8 @@ t_ast_node	*parse_pipeline_part(char ***tokens)
 	return (left);
 }
 
+// utility func to assign the correct redirection type
+// to the redirect node
 t_redirect_type	assign_redirection_type(char *token)
 {
 	t_redirect_type	type;
@@ -59,6 +62,7 @@ t_redirect_type	assign_redirection_type(char *token)
 	return (type);
 }
 
+// parses the redirections part of the expression
 t_ast_node	*parse_redirections_part(char ***tokens, t_ast_node *node)
 {
 	t_redirect_type	type;
