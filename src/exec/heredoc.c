@@ -24,6 +24,7 @@ static char	*generate_tmp_filename(void)
 	return (tmp_name);
 }
 
+// utility function, gathers heredoc input from the user (stdin)
 static void	get_heredoc_input(t_redirect *redirect, int fd_tmp)
 {
 	char	*line;
@@ -46,6 +47,8 @@ static void	get_heredoc_input(t_redirect *redirect, int fd_tmp)
 	}
 }
 
+// a utility to process a single heredoc
+// redirect type node
 static int	process_single_heredoc(t_redirect *redirect)
 {
 	int		fd_tmp;
@@ -66,6 +69,8 @@ static int	process_single_heredoc(t_redirect *redirect)
 	return (0);
 }
 
+// func to preprocess and gather input for all
+// heredocs BEFORE executing the AST
 void	preprocess_heredocs(t_ast_node *node)
 {
 	if (!node)

@@ -12,10 +12,7 @@
 
 #include "../../inc/minishell.h"
 
-// returns negative value on errors:
-// - tree non-existent
-// - command execution failure
-
+// returns negative value on command execution failure
 int	handle_cmd_errors(int cmd_status, t_shell_data *shell_data,
 		t_ast_node *node)
 {
@@ -30,6 +27,8 @@ int	handle_cmd_errors(int cmd_status, t_shell_data *shell_data,
 	return (0);
 }
 
+// highest level func responsible for command execution
+// utilizes checks and validations for the executable
 int	execute_command(t_ast_node *node, t_shell_data *shell_data)
 {
 	int		status;
@@ -59,6 +58,7 @@ int	execute_command(t_ast_node *node, t_shell_data *shell_data)
 	return (-1);
 }
 
+// executes a redirection node
 int	execute_redirection(t_ast_node *node, t_shell_data *shell_data, int status,
 		t_ast_node *cmd_node)
 {
@@ -86,6 +86,9 @@ int	execute_redirection(t_ast_node *node, t_shell_data *shell_data, int status,
 	return (status);
 }
 
+// executes a pipe node using fork()
+// to create child processes
+// which execute the left and right leaves of the PIPE NODE
 int	execute_pipeline(t_ast_node *node, t_shell_data *shell_data, int status)
 {
 	int		pipe_fd[2];
@@ -113,6 +116,9 @@ int	execute_pipeline(t_ast_node *node, t_shell_data *shell_data, int status)
 	return (WEXITSTATUS(status));
 }
 
+// highest level func responsible for parsed expression execution
+// preprocesses heredocs & handles 
+//environment variable substitution
 int	execute_ast(t_ast_node *node, t_shell_data *shell_data)
 {
 	if (!node)

@@ -12,6 +12,8 @@
 
 #include "../../inc/minishell.h"
 
+// restores the stdin and stdout file descriptors
+// to its default values
 void	restore_fds(int saved_stdin, int saved_stdout)
 {
 	if (saved_stdin != -1)
@@ -26,6 +28,7 @@ void	restore_fds(int saved_stdin, int saved_stdout)
 	}
 }
 
+// traverses the AST to find the command node
 t_ast_node	*traverse_to_command(t_ast_node *node)
 {
 	t_ast_node	*current;
@@ -36,6 +39,7 @@ t_ast_node	*traverse_to_command(t_ast_node *node)
 	return (current);
 }
 
+// checks if the dup2 call was successful
 int	handle_dup_errors(int saved_stdin, int saved_stdout)
 {
 	if (saved_stdin == -1 || saved_stdout == -1)

@@ -12,6 +12,7 @@
 
 #include "../../inc/minishell.h"
 
+// highest level command parsing utility
 // creates & returns a valid-type node
 t_ast_node	*parse_cmd(char ***tokens)
 {
@@ -41,8 +42,8 @@ t_ast_node	*parse_cmd(char ***tokens)
 }
 
 // highest level parser function
-// utilizes recursion to travel
-// through the expression and build the AST
+// utilizes recursion to travel through
+// the expression and build the AST
 t_ast_node	*build_ast(char **tokens)
 {
 	t_ast_node	*node;
