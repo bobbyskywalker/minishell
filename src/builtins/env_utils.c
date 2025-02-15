@@ -18,7 +18,7 @@ char	*get_key(char *str)
 	size_t	j;
 	char	*key;
 
-	if (!str)
+	if (!str || !ft_strchr(str, '='))
 		return (NULL);
 	i = 0;
 	while (str[i] != 0 && str[i] != '=')
@@ -41,7 +41,7 @@ char	*get_value(char *str)
 	size_t	j;
 	size_t	val_len;
 
-	if (!str)
+	if (!str || !ft_strchr(str, '='))
 		return (NULL);
 	i = 0;
 	while (str[i] && str[i] != '=')
