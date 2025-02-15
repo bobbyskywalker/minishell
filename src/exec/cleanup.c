@@ -12,6 +12,8 @@
 
 #include "../../inc/minishell.h"
 
+// cleanup function, used mostly on error conditions
+// or premature exits
 void	cleanup(t_shell_data *shell_data)
 {
 	ft_arr2d_free(shell_data->env_vars);

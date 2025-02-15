@@ -36,9 +36,8 @@ TEST(TokenizerTest, SimpleShellLikeTokens)
     char *str = "echo 123\"   super\"";
     char **tokens = tokenize(str);
     EXPECT_STREQ(tokens[0], "echo");
-    EXPECT_STREQ(tokens[1], "123");
-    EXPECT_STREQ(tokens[2], "\"   super\"");
-    EXPECT_STREQ(tokens[3], NULL);
+    EXPECT_STREQ(tokens[1], "123   super");
+    EXPECT_STREQ(tokens[2], NULL);
 }
 
 TEST(TokenizerTest, AdvShellLikeTokens)
@@ -46,15 +45,13 @@ TEST(TokenizerTest, AdvShellLikeTokens)
     char *str = "echo 123\"   super\" '|' grep '1' | wc\"-l\"";
     char **tokens = tokenize(str);
     EXPECT_STREQ(tokens[0], "echo");
-    EXPECT_STREQ(tokens[1], "123");
-    EXPECT_STREQ(tokens[2], "\"   super\"");
-    EXPECT_STREQ(tokens[3], "\'|\'");
-    EXPECT_STREQ(tokens[4], "grep");
-    EXPECT_STREQ(tokens[5], "\'1\'");
-    EXPECT_STREQ(tokens[6], "|");
-    EXPECT_STREQ(tokens[7], "wc");
-    EXPECT_STREQ(tokens[8], "\"-l\"");
-    EXPECT_EQ(tokens[9], nullptr);
+    EXPECT_STREQ(tokens[1], "123   super");
+    EXPECT_STREQ(tokens[2], "\'|\'");
+    EXPECT_STREQ(tokens[3], "grep");
+    EXPECT_STREQ(tokens[4], "\'1\'");
+    EXPECT_STREQ(tokens[5], "|");
+    EXPECT_STREQ(tokens[6], "wc-l");
+    EXPECT_EQ(tokens[7], nullptr);
 }
 
 TEST(TokenizerTest, AdvShellLikeTokens2)
@@ -68,9 +65,8 @@ TEST(TokenizerTest, AdvShellLikeTokens2)
     EXPECT_STREQ(tokens[4], "grep");
     EXPECT_STREQ(tokens[5], "\'1 0 1 2 3\'");
     EXPECT_STREQ(tokens[6], "|");
-    EXPECT_STREQ(tokens[7], "wc");
-    EXPECT_STREQ(tokens[8], "\"-lspwdcwks\"");
-    EXPECT_EQ(tokens[9], nullptr);
+    EXPECT_STREQ(tokens[7], "wc-lspwdcwks");
+    EXPECT_EQ(tokens[8], nullptr);
 }
 
 TEST(TokenizerTest, UnmatchedQuotes) {

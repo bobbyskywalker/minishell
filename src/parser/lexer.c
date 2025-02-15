@@ -39,6 +39,7 @@ char	*get_token(char *source, char *token, int *end_flag)
 	return (source);
 }
 
+// tokenizer loop, fills the array of tokens
 void	tokenize_loop(char *source, char **tokens, int end_flag, int i)
 {
 	while (1)
@@ -67,6 +68,8 @@ void	tokenize_loop(char *source, char **tokens, int end_flag, int i)
 	}
 }
 
+// highest level lexer function
+// creates an array of tokens filled in tokenize_loop()
 char	**tokenize(char *source)
 {
 	char	**tokens;
@@ -82,6 +85,7 @@ char	**tokenize(char *source)
 	return (tokens);
 }
 
+// utility to extract the next token
 char	*get_next_token(char ***tokens)
 {
 	if (!(**tokens))
