@@ -25,7 +25,7 @@ char	*get_key(char *str)
 		i++;
 	key = (char *)malloc(sizeof(char) * (i + 1));
 	j = 0;
-	while (j < i)
+	while (j <= i)
 	{
 		key[j] = str[j];
 		j++;
@@ -41,7 +41,7 @@ char	*get_value(char *str)
 	size_t	j;
 	size_t	val_len;
 
-	if (!str || !ft_strchr(str, '='))
+	if (!str || !ft_strchr(str, '=') || !ft_strchr(str, '=')[1])
 		return (NULL);
 	i = 0;
 	while (str[i] && str[i] != '=')
