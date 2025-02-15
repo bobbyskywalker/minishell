@@ -13,13 +13,15 @@
 #include "../../inc/minishell.h"
 
 // returns negative value on command execution failure
+// prints redundant error message? idk
 int	handle_cmd_errors(int cmd_status, t_shell_data *shell_data,
 		t_ast_node *node)
 {
+	(void)node;
 	if (cmd_status == -1)
 	{
 		shell_data->last_cmd_status = 127;
-		ft_printf("minishell: command not found: %s\n", node->command->args[0]);
+		//ft_printf("minishell: command not found: %s\n", node->command->args[0]);
 		return (-1);
 	}
 	else if (cmd_status == 1)
