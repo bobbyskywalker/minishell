@@ -56,7 +56,8 @@ int	prepare_cmd_for_exec(t_ast_node *node, t_shell_data *shell_data)
 {
 	char	**dirs;
 
-	if (!node || node->type != COMMAND_NODE)
+	if (!node || node->type != COMMAND_NODE || !node->command->args ||
+		!*node->command->args)
 		return (-1);
 	if (is_builtin(node->command->args[0]))
 	{
