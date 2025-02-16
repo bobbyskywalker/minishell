@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_signals.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kubaz <kubaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 08:07:47 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/14 17:56:17 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/16 23:18:15 by kubaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,31 +20,6 @@ static void	show_new_prompt(int signal)
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
-	}
-}
-
-void	show_new_prompt4child(int signal)
-{
-	if (signal == SIGINT)
-	{
-		write(STDIN_FILENO, "\n", 1);
-		rl_replace_line("", 0);
-	}
-}
-
-void	set_signal4child(void)
-{
-	struct sigaction	sigint_act;
-	int					status;
-	
-	sigemptyset(&sigint_act.sa_mask);
-	sigint_act.sa_handler = &show_new_prompt4child;
-	sigint_act.sa_flags = 0;
-	status = sigaction(SIGINT, &sigint_act, NULL);
-	if (status == -1)
-	{
-		perror("sigaction");
-		exit(EXIT_FAILURE);
 	}
 }
 
@@ -94,7 +69,7 @@ static void	stop_terminal_echo(void)
 	}
 }
 
-void	set_signals_handling(void)
+void	set_global_signals(void)
 {
 	if (!isatty(STDOUT_FILENO))
 		return ;
