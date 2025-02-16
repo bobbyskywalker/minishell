@@ -3,14 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   built_ins_unset.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kubaz <kubaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:12:30 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/14 17:09:12 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/17 00:28:54 by kubaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+static void	remove_char(char *str, char c)
+{
+	size_t	i;
+	size_t	j;
+
+	if (!str)
+		return ;
+	i = 0;
+	j = 0;
+	while (i < ft_strlen(str))
+	{
+		if (str[i] != c)
+		{
+			str[j] = str[i];
+			j++;
+		}
+		i++;
+	}
+	str[j] = 0;
+}
 
 static void	remove_env(char *env, t_shell_data *shell_data)
 {
@@ -35,23 +56,27 @@ static void	remove_env(char *env, t_shell_data *shell_data)
 
 int	ft_unset(char **args, t_shell_data *shell_data)
 {
-	int	i;
-
-	if (ft_2d_strlen(args) < 1)
-	{
-		ft_printf("unset: not enough arguments\n");
-		return (1);
-	}
+	int		i;
+	int		j;
+	char	*tmp;
+	
 	i = -1;
 	while (args[++i])
 	{
-		if (ft_strchr(args[i], '='))
+		remove_char(args[i], '"');
+		remove_char(args[i], '\'');
+		j = -1;
+		while (args[i][++j])
 		{
-			ft_printf("unset: %s: invalid parameter name\n", args[i]);
-			i++;
+			if (!ft_isalnum(args[i][j]))
+			{
+				i++;
+				break ;
+			}
 		}
-		else
-			remove_env(args[i], shell_data);
+		tmp = ft_strjoin(args[i], "=");
+		remove_env(tmp, shell_data);
+		free(tmp);
 	}
-	return (1);
+	return (0);
 }
