@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   built_ins_export.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kubaz <kubaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 15:11:17 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/14 16:13:32 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/17 00:12:17 by kubaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	remove_char(char *str, char c)
+static void	remove_char(char *str, char c)
 {
 	size_t	i;
 	size_t	j;
@@ -33,14 +33,32 @@ void	remove_char(char *str, char c)
 	str[j] = 0;
 }
 
-static char	*process_args(char *input)
+static int	check_input(char **input)
 {
-	char	*processed_env;
+	int		i;
+	int		j;
+	char	*key;
 
-	remove_char(input, '"');
-	remove_char(input, '\'');
-	processed_env = ft_strdup(input);
-	return (processed_env);
+	i = -1;
+	while (input[++i])
+	{
+		if (input[i][0] == '=')
+			return (ft_printf("export: not valid in this context:\n"), 1);
+		key = get_key(input[i]);
+		if (!key)
+			continue ;
+		j = -1;
+		while (key[++j])
+			if (!ft_isalnum(key[j]) && key[j] != '=')
+			{
+				free(key);
+				return(ft_printf("export: `%s': not a valid identifier\n", input[i]), 1);
+			}
+		free(key);
+		remove_char(input[i], '"');
+		remove_char(input[i], '\'');
+	}
+	return (0);
 }
 
 static void	append_env(char *env, t_shell_data *shell_data)
@@ -65,31 +83,43 @@ static void	append_env(char *env, t_shell_data *shell_data)
 	}
 }
 
-int	ft_export(char **args, t_shell_data *shell_data)
+static char	*merge_tokens(char *cur, char *next)
 {
-	size_t	i;
-	char	*stripped_arg;
+	char	*result;
 	char	*tmp;
 
+	if (!cur)
+		return (NULL);
+	if (!next)
+		return (cur);
+	tmp = ft_strjoin(cur, " ");
+	result = ft_strjoin(tmp, next);
+	free(tmp);
+	free(cur);
+	return (result);
+}
+
+int	ft_export(char **args, t_shell_data *shell_data)
+{
+	int		i;
+	char	*last_key;
+
 	if (ft_2d_strlen(args) < 1)
-		return (ft_env(*shell_data), 1);
-	i = -1;
-	while (args[++i])
-		if (ft_strlen(args[i]) == 0)
-			return (ft_printf("export: not valid in this context:\n"), -1);
+		return (ft_env(*shell_data), 0);
+	if (check_input(args))
+		return (1);
+	last_key = NULL;
 	i = -1;
 	while (args[++i])
 	{
-		if (!ft_strchr(args[i], '='))
-			continue ;
-		if (args[i + 1] && !ft_strchr(args[i], '=')[1] && !ft_strchr(args[i
-				+ 1], '='))
-			tmp = ft_strjoin(args[i], args[i + 1]);
-		else
-			tmp = ft_strdup(args[i]);
-		stripped_arg = process_args(tmp);
-		free(tmp);
-		append_env(stripped_arg, shell_data);
+		if (ft_strchr(args[i], '='))
+			last_key = ft_strdup(args[i]);
+		while (args[i + 1] && !ft_strchr(args[i + 1], '=') && last_key)
+		{
+			last_key = merge_tokens(last_key, args[i + 1]);
+			i++;
+		}
+		append_env(last_key, shell_data);
 	}
-	return (1);
+	return (0);
 }
