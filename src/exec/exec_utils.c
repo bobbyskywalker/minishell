@@ -41,7 +41,7 @@ int	exec_builtin(t_ast_node node, t_shell_data *shell_data)
 	if (!ft_strncmp(node.command->args[0], "pwd", 3))
 		return (ft_pwd());
 	if (!ft_strncmp(node.command->args[0], "exit", 4))
-		return (ft_exit(shell_data), -1);
+		return (ft_exit(shell_data), 0);
 	if (!ft_strncmp(node.command->args[0], "export", 6))
 		return (ft_export(&node.command->args[1], shell_data));
 	if (!ft_strncmp(node.command->args[0], "unset", 5))
