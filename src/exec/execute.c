@@ -3,23 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kubaz <kubaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:09:01 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/14 18:19:44 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/16 23:31:45 by kubaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
 // returns negative value on command execution failure
+// prints redundant error message? idk
 int	handle_cmd_errors(int cmd_status, t_shell_data *shell_data,
 		t_ast_node *node)
 {
+	(void)node;
 	if (cmd_status == -1)
 	{
 		shell_data->last_cmd_status = 127;
-		ft_printf("minishell: command not found: %s\n", node->command->args[0]);
+		//ft_printf("minishell: command not found: %s\n", node->command->args[0]);
 		return (-1);
 	}
 	else if (cmd_status == 1)
@@ -38,7 +40,7 @@ int	execute_command(t_ast_node *node, t_shell_data *shell_data)
 	cmd_status = prepare_cmd_for_exec(node, shell_data);
 	if (handle_cmd_errors(cmd_status, shell_data, node) != 0)
 		return (-1);
-	set_signal4child();
+	set_child_signals();
 	pid = fork();
 	if (!pid)
 	{	

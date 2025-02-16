@@ -6,8 +6,9 @@ NAME = minishell
 SRCS = src/main.c \
        src/parser/AST_parser.c src/parser/AST_utils.c src/parser/parser_utils.c src/parser/lexer.c src/parser/tokenizer_utils.c \
        src/exec/cmd_validation.c src/exec/execute.c src/exec/exec_utils.c src/exec/heredoc.c src/exec/redirect.c src/exec/pipe.c \
+	   src/exec/redirect_utils.c src/exec/cleanup.c \
        src/builtins/built_ins_export.c src/builtins/built_ins_unset.c src/builtins/built_ins_rest.c src/builtins/env_utils.c \
-       src/signals/set_signals.c src/signals/reset_signals.c src/exec/redirect_utils.c src/exec/cleanup.c
+       src/signals/set_signals.c src/signals/set_child_signals.c
 
 OBJ_DIR = obj
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)

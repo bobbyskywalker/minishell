@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kubaz <kubaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:09:03 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/14 18:20:41 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/16 23:38:18 by kubaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	shell_loop(t_shell_data *shell_data)
 	node = NULL;
 	while (1)
 	{
-		set_signals_handling();
+		set_global_signals();
 		line = readline("minicfel $> ");
 		if (!line)
 			break ;
@@ -35,7 +35,6 @@ void	shell_loop(t_shell_data *shell_data)
 		node = build_ast(tokens);
 		shell_data->root = node;
 		free(tokens);
-		//reset_signals_handling();
 		execute_ast(node, shell_data);
 		free_ast(shell_data->root);
 	}
@@ -57,8 +56,11 @@ t_shell_data	*create_shell_data(char **envp)
 	return (shell_data);
 }
 
-//TODO:
-//signal -> sleep ->last_cmd_status = 130
+// Known issues:
+// ctrl-c gets exit status = 85, not 130
+// export with no args works like env, not like export
+// export with args works a bit different than OG one
+// ctrl-c doesn't escape from heredoc
 int	main(int ac, char **av, char **envp)
 {
 	t_shell_data	*shell_data;
