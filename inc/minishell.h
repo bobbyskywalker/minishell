@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kubaz <kubaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 11:17:53 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/14 17:51:42 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/16 23:19:12 by kubaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,8 @@ int			is_builtin(char *cmd);
 int			exec_builtin(t_ast_node node, t_shell_data *shell_data);
 
 // SECTION: signals handling
-void		set_signals_handling(void);
-void		reset_signals_handling(void);
-void		set_signal4child(void);
+void		set_global_signals(void);
+void		set_child_signals(void);
 
 // SECTION: cleanup
 void		cleanup(t_shell_data *shell_data);
