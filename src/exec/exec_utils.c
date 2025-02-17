@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 17:50:45 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/14 17:11:21 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/17 10:21:17 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ int	prepare_cmd_for_exec(t_ast_node *node, t_shell_data *shell_data)
 {
 	char	**dirs;
 
-	if (!node || node->type != COMMAND_NODE || !node->command->args ||
-		!*node->command->args)
+	if (!node || node->type != COMMAND_NODE || !node->command->args
+		|| !*node->command->args)
 		return (-1);
 	if (is_builtin(node->command->args[0]))
 	{

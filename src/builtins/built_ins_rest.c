@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_ins_rest.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:08:59 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/14 15:24:54 by jzackiew         ###   ########.fr       */
+/*   Updated: 2025/02/17 10:38:05 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	ft_echo(char **args)
 	{
 		j = -1;
 		while (args[i][++j])
-			if (args[i][j] != '"')
+			if (args[i][j] != '"' && args[i][j] != '\'')
 				write(STDOUT_FILENO, &args[i][j], 1);
 		if (args[i + 1])
 			write(STDOUT_FILENO, " ", 1);
