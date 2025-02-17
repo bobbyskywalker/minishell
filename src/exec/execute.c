@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kubaz <kubaz@student.42.fr>                +#+  +:+       +#+        */
+/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 18:09:01 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/16 23:31:45 by kubaz            ###   ########.fr       */
+/*   Updated: 2025/02/17 10:21:49 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int	handle_cmd_errors(int cmd_status, t_shell_data *shell_data,
 	if (cmd_status == -1)
 	{
 		shell_data->last_cmd_status = 127;
-		//ft_printf("minishell: command not found: %s\n", node->command->args[0]);
 		return (-1);
 	}
 	else if (cmd_status == 1)
@@ -43,7 +42,7 @@ int	execute_command(t_ast_node *node, t_shell_data *shell_data)
 	set_child_signals();
 	pid = fork();
 	if (!pid)
-	{	
+	{
 		execve(node->command->args[0], node->command->args,
 			shell_data->env_vars);
 		perror("execve");
@@ -119,8 +118,8 @@ int	execute_pipeline(t_ast_node *node, t_shell_data *shell_data, int status)
 }
 
 // highest level func responsible for parsed expression execution
-// preprocesses heredocs & handles 
-//environment variable substitution
+// preprocesses heredocs & handles
+// environment variable substitution
 int	execute_ast(t_ast_node *node, t_shell_data *shell_data)
 {
 	if (!node)

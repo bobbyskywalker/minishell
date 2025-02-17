@@ -6,7 +6,7 @@
 /*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 15:05:43 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/14 13:03:42 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/17 11:07:24 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int	swap_env_val(t_ast_node *node, t_shell_data shell_data)
 	int	i;
 	int	key_id;
 
-	i = 0;
+	i = 0;	
 	while (node->command->args[i])
 	{
 		if (node->command->args[i][0] == '$')
@@ -117,6 +117,7 @@ int	swap_env_val(t_ast_node *node, t_shell_data shell_data)
 				node->command->args[i] = ft_itoa(shell_data.last_cmd_status);
 				continue ;
 			}
+			ft_strlcat(node->command->args[i], "=", ft_strlen(node->command->args[i]) + 2);	
 			key_id = is_key_in_envs(&node->command->args[i][1],
 					shell_data.env_vars);
 			free(node->command->args[i]);

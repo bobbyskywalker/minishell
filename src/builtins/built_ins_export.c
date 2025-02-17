@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_ins_export.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kubaz <kubaz@student.42.fr>                +#+  +:+       +#+        */
+/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 15:11:17 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/17 00:12:17 by kubaz            ###   ########.fr       */
+/*   Updated: 2025/02/17 10:26:41 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,14 @@ static int	check_input(char **input)
 			continue ;
 		j = -1;
 		while (key[++j])
+		{
 			if (!ft_isalnum(key[j]) && key[j] != '=')
 			{
 				free(key);
-				return(ft_printf("export: `%s': not a valid identifier\n", input[i]), 1);
+				return (ft_printf("export: `%s': not a valid identifier\n",
+						input[i]), 1);
 			}
+		}
 		free(key);
 		remove_char(input[i], '"');
 		remove_char(input[i], '\'');

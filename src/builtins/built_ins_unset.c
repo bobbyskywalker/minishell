@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_ins_unset.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kubaz <kubaz@student.42.fr>                +#+  +:+       +#+        */
+/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:12:30 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/17 00:28:54 by kubaz            ###   ########.fr       */
+/*   Updated: 2025/02/17 10:27:02 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	ft_unset(char **args, t_shell_data *shell_data)
 	int		i;
 	int		j;
 	char	*tmp;
-	
+
 	i = -1;
 	while (args[++i])
 	{
