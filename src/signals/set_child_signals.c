@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_child_signals.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kubaz <kubaz@student.42.fr>                +#+  +:+       +#+        */
+/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 23:17:45 by kubaz             #+#    #+#             */
-/*   Updated: 2025/02/16 23:18:58 by kubaz            ###   ########.fr       */
+/*   Updated: 2025/02/17 10:22:49 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	set_signal4child(void)
 {
 	struct sigaction	sigint_act;
 	int					status;
-	
+
 	sigemptyset(&sigint_act.sa_mask);
 	sigint_act.sa_handler = &show_new_prompt4child;
 	sigint_act.sa_flags = 0;
