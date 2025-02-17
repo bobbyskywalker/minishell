@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   built_ins_export.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 15:11:17 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/17 10:26:41 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/17 11:17:17 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static void	remove_char(char *str, char c)
+static void	remove_quotes(char *str)
 {
 	size_t	i;
 	size_t	j;
@@ -23,7 +23,7 @@ static void	remove_char(char *str, char c)
 	j = 0;
 	while (i < ft_strlen(str))
 	{
-		if (str[i] != c)
+		if (str[i] != '"' && str[i] != '\'')
 		{
 			str[j] = str[i];
 			j++;
@@ -49,17 +49,12 @@ static int	check_input(char **input)
 			continue ;
 		j = -1;
 		while (key[++j])
-		{
 			if (!ft_isalnum(key[j]) && key[j] != '=')
-			{
-				free(key);
-				return (ft_printf("export: `%s': not a valid identifier\n",
+				return (free(key),
+					ft_printf("export: `%s': not a valid identifier\n",
 						input[i]), 1);
-			}
-		}
 		free(key);
-		remove_char(input[i], '"');
-		remove_char(input[i], '\'');
+		remove_quotes(input[i]);
 	}
 	return (0);
 }
