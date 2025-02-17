@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   built_ins_unset.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 16:12:30 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/17 10:27:02 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/17 11:15:15 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static void	remove_char(char *str, char c)
+static void	remove_quotes(char *str)
 {
 	size_t	i;
 	size_t	j;
@@ -23,7 +23,7 @@ static void	remove_char(char *str, char c)
 	j = 0;
 	while (i < ft_strlen(str))
 	{
-		if (str[i] != c)
+		if (str[i] != '"' && str[i] != '\'')
 		{
 			str[j] = str[i];
 			j++;
@@ -63,8 +63,7 @@ int	ft_unset(char **args, t_shell_data *shell_data)
 	i = -1;
 	while (args[++i])
 	{
-		remove_char(args[i], '"');
-		remove_char(args[i], '\'');
+		remove_quotes(args[i]);
 		j = -1;
 		while (args[i][++j])
 		{

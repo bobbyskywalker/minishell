@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jzackiew <jzackiew@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 15:05:43 by jzackiew          #+#    #+#             */
-/*   Updated: 2025/02/17 11:07:24 by agarbacz         ###   ########.fr       */
+/*   Updated: 2025/02/17 11:20:34 by jzackiew         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,32 +101,31 @@ int	is_key_in_envs(char *str, char **envs)
 	return (-1);
 }
 
-int	swap_env_val(t_ast_node *node, t_shell_data shell_data)
+int	swap_env_val(t_ast_node *node, t_shell_data s_d)
 {
 	int	i;
 	int	key_id;
 
-	i = 0;	
-	while (node->command->args[i])
+	i = -1;
+	while (node->command->args[++i])
 	{
 		if (node->command->args[i][0] == '$')
 		{
 			if (node->command->args[i][1] == '?')
 			{
 				free(node->command->args[i]);
-				node->command->args[i] = ft_itoa(shell_data.last_cmd_status);
+				node->command->args[i] = ft_itoa(s_d.last_cmd_status);
 				continue ;
 			}
-			ft_strlcat(node->command->args[i], "=", ft_strlen(node->command->args[i]) + 2);	
-			key_id = is_key_in_envs(&node->command->args[i][1],
-					shell_data.env_vars);
+			ft_strlcat(node->command->args[i], "=",
+				ft_strlen(node->command->args[i]) + 2);
+			key_id = is_key_in_envs(&node->command->args[i][1], s_d.env_vars);
 			free(node->command->args[i]);
 			if (key_id == -1)
 				node->command->args[i] = ft_strdup("");
 			else
-				node->command->args[i] = get_value(shell_data.env_vars[key_id]);
+				node->command->args[i] = get_value(s_d.env_vars[key_id]);
 		}
-		i++;
 	}
 	return (1);
 }
