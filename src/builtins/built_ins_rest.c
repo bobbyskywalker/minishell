@@ -18,6 +18,8 @@ int	ft_echo(char **args)
 	size_t	j;
 	int		is_flag;
 
+	if (!args || !*args)
+		return (-1);
 	is_flag = 0;
 	i = -1;
 	if (!ft_strncmp(args[0], "-n", 3))
