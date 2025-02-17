@@ -1,5 +1,5 @@
 # https://github.com/JonathanDUFOUR/minishell/blob/master/ignoreliberror
-# valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=ignore_readline.supp -s ./minishell
+# valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=misc/ignore_readline.supp -s ./minishell
 {
     leak readline
     Memcheck:Leak

@@ -1,16 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main.c                                   			:+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kubaz <kubaz@student.42.fr>                +#+  +:+       +#+        */
+/*   By: agarbacz <agarbacz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/28 18:09:03 by agarbacz          #+#    #+#             */
-/*   Updated: 2025/02/16 23:38:18 by kubaz            ###   ########.fr       */
+/*	 Created: 2025/01/28 18:09:03 by agarbacz          #+#    #+#             */
+/*   Updated: 2025/02/16 23:38:18 by agarbacz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+void print_signature()
+{
+    printf("\033[0;35m");
+    printf("__  __ _____ _   _ _____  _____ _    _ ______ _      _      \n");
+    printf("|  \\/  |_   _| \\ | |_   _|/ ____| |  | |  ____| |    | |     \n");
+    printf("| \\  / | | | |  \\| | | | | (___ | |__| | |__  | |    | |     \n");
+    printf("| |\\/| | | | | . ` | | |  \\___ \\|  __  |  __| | |    | |     \n");
+    printf("| |  | |_| |_| |\\  |_| |_ ____) | |  | | |____| |____| |____ \n");
+    printf("|_|  |_|_____|_| \\_|_____|_____/|_|  |_|______|______|______| \n\n");
+    printf("https://github.com/bobbyskywalker\n");
+    printf("https://github.com/Jzackiewicz\n\n");
+    printf("\033[0m");
+}
 
 void	shell_loop(t_shell_data *shell_data)
 {
@@ -19,10 +33,11 @@ void	shell_loop(t_shell_data *shell_data)
 	t_ast_node	*node;
 
 	node = NULL;
+	print_signature();
 	while (1)
 	{
 		set_global_signals();
-		line = readline("minicfel $> ");
+		line = readline("minishell $> ");
 		if (!line)
 			break ;
 		if (!*line)
@@ -56,11 +71,6 @@ t_shell_data	*create_shell_data(char **envp)
 	return (shell_data);
 }
 
-// Known issues:
-// ctrl-c gets exit status = 85, not 130
-// export with no args works like env, not like export
-// export with args works a bit different than OG one
-// ctrl-c doesn't escape from heredoc
 int	main(int ac, char **av, char **envp)
 {
 	t_shell_data	*shell_data;
